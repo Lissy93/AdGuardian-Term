@@ -1,0 +1,16 @@
+[package]
+name = "adguardian-tui"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tui = { package = "ratatui" }
+euclid = "0.22.5"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+base64 = "0.13"
+crossterm = { version = "0.22.0", features = ["serde"] }
+reqwest = { version = "0.11", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+tokio = { version = "1", features = ["full"] }
