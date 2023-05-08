@@ -116,6 +116,20 @@ fn make_request_cell(q: &Question) -> Result<String, Box<dyn std::error::Error>>
     Ok(format!("[{}] {} - {}", q.class, q.question_type, q.name))
 }
 
+fn make_time_taken_and_color(elapsed: &str) -> Result<(String, Color), Box<dyn std::error::Error>> {
+    let elapsed_f64 = elapsed.parse::<f64>()?;
+    let rounded_elapsed = (elapsed_f64 * 100.0).round() / 100.0;
+    let time_taken = format!("{:.2} ms", rounded_elapsed);
+    let color = if elapsed_f64 < 1.0 {
+        Color::Green
+    } else if elapsed_f64 >= 1.0 && elapsed_f64 <= 20.0 {
+        Color::Yellow
+    } else {
+        Color::Red
+    };
+    Ok((time_taken, color))
+}
+
 fn make_time_taken(elapsed: &str) -> Result<String, Box<dyn std::error::Error>> {
     let elapsed_f64 = elapsed.parse::<f64>()?;
     let rounded_elapsed = (elapsed_f64 * 100.0).round() / 100.0;
@@ -185,29 +199,16 @@ async fn draw_ui(data: Vec<Query>) -> Result<(), Box<dyn std::error::Error>> {
                 
                 let client = Cell::from(query.client.as_str())
                     .style(Style::default().fg(Color::Blue));
-
                 
-                let elapsed_f64 = query.elapsed_ms.parse::<f64>().unwrap();
-                let time_color = elapsed_time_color(elapsed_f64);
-                let elapsed_ms = Cell::from(make_time_taken(&query.elapsed_ms).unwrap())
-                    .style(Style::default().fg(time_color));
-
-                // .style(Style::default().fg(Color::Red))
-                // let question_name = Cell::from(query.question.name.as_str());
-                let answer_value = query
-                    .answer
-                    .as_ref()
-                    .and_then(|answers| answers.get(0))
-                    .map_or_else(|| Cell::from(""), |answer| Cell::from(answer.value.as_str()));
-                
-                    let (status_txt, status_color) = block_status_text(&query.reason, query.cached);
-                    let status = Cell::from(status_txt).style(Style::default().fg(status_color));
+                let (time_taken, elapsed_color) = make_time_taken_and_color(&query.elapsed_ms).unwrap();
+                let elapsed_ms = Cell::from(time_taken).style(Style::default().fg(elapsed_color));
+                                    
+                let (status_txt, status_color) = block_status_text(&query.reason, query.cached);
+                let status = Cell::from(status_txt).style(Style::default().fg(status_color));
                     
                 let color = make_row_color(&query.reason);
                 Row::new(vec![time, question, status, client, elapsed_ms]).style(Style::default().fg(color))
             });
-
-            // Fields: Time, Request (question.class, question.type, question.name), Client, Time Taken, cached
 
             let table = Table::new(rows)
                 .header(Row::new(vec![
@@ -272,15 +273,22 @@ async fn draw_ui(data: Vec<Query>) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-async fn run() -> Result<(), Box<dyn std::error::Error>> {
+use tokio::time::interval;
 
+async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new();
     let hostname = "http://192.168.130.2:8083";
     let username = "admin";
     let password = "uPbxy1G8g0xO83nw";
-    let data = fetch_adguard_data(&client, hostname, username, password).await?;
-    draw_ui(data.data).await
+    let mut interval = interval(Duration::from_secs(5));
+
+    loop {
+        let data = fetch_adguard_data(&client, hostname, username, password).await?;
+        draw_ui(data.data).await?;
+        interval.tick().await;
+    }
 }
+
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let rt = tokio::runtime::Builder::new_current_thread()
