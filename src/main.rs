@@ -13,10 +13,12 @@ use crossterm::event::{poll, read, DisableMouseCapture, EnableMouseCapture, Even
 use crossterm::execute;
 use crossterm::terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen};
 
+use chrono::{DateTime, Utc, TimeZone};
+
 use tui::{
     backend::CrosstermBackend,
     layout::{Rect, Constraint, Direction, Layout},
-    style::{Color, Style},
+    style::{Color, Style, Modifier},
     widgets::{Block, Borders, Cell, Row, Table},
     Terminal,
 };
@@ -95,6 +97,66 @@ async fn fetch_adguard_data(
     Ok(data)
 }
 
+
+fn time_ago(timestamp: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let datetime = DateTime::parse_from_rfc3339(timestamp)?;
+    let datetime_utc = datetime.with_timezone(&Utc);
+    let now = Utc::now();
+
+    let duration = now - datetime_utc;
+
+    if duration.num_minutes() < 1 {
+        Ok(format!("{} sec ago", duration.num_seconds()))
+    } else {
+        Ok(format!("{} min ago", duration.num_minutes()))
+    }
+}
+
+fn make_request_cell(q: &Question) -> Result<String, Box<dyn std::error::Error>> {
+    Ok(format!("[{}] {} - {}", q.class, q.question_type, q.name))
+}
+
+fn make_time_taken(elapsed: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let elapsed_f64 = elapsed.parse::<f64>()?;
+    let rounded_elapsed = (elapsed_f64 * 100.0).round() / 100.0;
+    Ok(format!("{:.2} ms", rounded_elapsed))
+}
+
+fn elapsed_time_color(elapsed: f64) -> Color {
+    if elapsed < 1.0 {
+        Color::Green
+    } else if elapsed >= 1.0 && elapsed <= 20.0 {
+        Color::Yellow
+    } else {
+        Color::Red
+    }
+}
+
+fn make_row_color(reason: &str) -> Color {
+    return if reason == "NotFilteredNotFound" {
+        Color::Green
+    } else if reason == "FilteredBlackList" {
+        Color::Red
+    } else {
+        Color::Yellow
+    }
+}
+
+fn block_status_text(reason: &str, cached: bool) -> (String, Color) {
+    let (text, color) =
+    if reason == "FilteredBlackList" {
+        ("Blacklisted".to_string(), Color::Red)
+    } else if cached == true {
+        ("Cached".to_string(), Color::Cyan)
+    } else if reason == "NotFilteredNotFound" {
+        ("Allowed".to_string(), Color::Green)
+    } else {
+        ("Other Block".to_string(), Color::Yellow)
+    };
+    (text, color)
+}
+
+
 async fn draw_ui(data: Vec<Query>) -> Result<(), Box<dyn std::error::Error>> {
     enable_raw_mode()?;
     let mut stdout = stdout();
@@ -113,30 +175,55 @@ async fn draw_ui(data: Vec<Query>) -> Result<(), Box<dyn std::error::Error>> {
             f.render_widget(block, size);
 
             let rows = data.iter().map(|query| {
-                let client = Cell::from(query.client.as_str());
-                let question_name = Cell::from(query.question.name.as_str());
+                
+                let time = Cell::from(
+                    time_ago(query.time.as_str()).unwrap_or("unknown".to_string())
+                ).style(Style::default().fg(Color::Gray));
+                
+                let question = Cell::from(make_request_cell(&query.question).unwrap())
+                    .style(Style::default().add_modifier(Modifier::BOLD));
+                
+                let client = Cell::from(query.client.as_str())
+                    .style(Style::default().fg(Color::Blue));
+
+                
+                let elapsed_f64 = query.elapsed_ms.parse::<f64>().unwrap();
+                let time_color = elapsed_time_color(elapsed_f64);
+                let elapsed_ms = Cell::from(make_time_taken(&query.elapsed_ms).unwrap())
+                    .style(Style::default().fg(time_color));
+
+                // .style(Style::default().fg(Color::Red))
+                // let question_name = Cell::from(query.question.name.as_str());
                 let answer_value = query
                     .answer
                     .as_ref()
                     .and_then(|answers| answers.get(0))
                     .map_or_else(|| Cell::from(""), |answer| Cell::from(answer.value.as_str()));
-                let status = Cell::from(query.status.as_str());
-                Row::new(vec![client, question_name, answer_value, status])
+                
+                    let (status_txt, status_color) = block_status_text(&query.reason, query.cached);
+                    let status = Cell::from(status_txt).style(Style::default().fg(status_color));
+                    
+                let color = make_row_color(&query.reason);
+                Row::new(vec![time, question, status, client, elapsed_ms]).style(Style::default().fg(color))
             });
+
+            // Fields: Time, Request (question.class, question.type, question.name), Client, Time Taken, cached
 
             let table = Table::new(rows)
                 .header(Row::new(vec![
-                    Cell::from("Client"),
-                    Cell::from("Question"),
-                    Cell::from("Answer"),
+                    Cell::from("Time"),
+                    Cell::from("Request"),
                     Cell::from("Status"),
+                    Cell::from("Client"),
+                    Cell::from("Time Taken"),
                 ]))
                 .block(Block::default().title("Query Log").borders(Borders::ALL))
                 .widths(&[
-                    Constraint::Percentage(25),
-                    Constraint::Percentage(25),
-                    Constraint::Percentage(25),
-                    Constraint::Percentage(25),
+                    Constraint::Percentage(15),
+                    Constraint::Percentage(35),
+                    Constraint::Percentage(15),
+                    Constraint::Percentage(20),
+                    Constraint::Percentage(15),
                 ]);
 
             let chunks = Layout::default()
@@ -190,7 +277,7 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new();
     let hostname = "http://192.168.130.2:8083";
     let username = "admin";
-    let password = "";
+    let password = "uPbxy1G8g0xO83nw";
     let data = fetch_adguard_data(&client, hostname, username, password).await?;
     draw_ui(data.data).await
 }
