@@ -1,7 +1,7 @@
 
 // Import modules, and types
 
-use std::error::Error;
+// use std::error::Error;
 use std::io::{stdout};
 use std::time::Duration;
 
@@ -14,6 +14,9 @@ use crossterm::execute;
 use crossterm::terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen};
 
 use chrono::{DateTime, Utc, TimeZone};
+
+use tokio::time::interval;
+use anyhow::Error;
 
 use tui::{
     backend::CrosstermBackend,
@@ -75,7 +78,13 @@ async fn fetch_adguard_data(
     endpoint: &str,
     username: &str,
     password: &str,
-) -> Result<QueryResponse, Box<dyn Error>> {
+) -> Result<QueryResponse, anyhow::Error> {
+// async fn fetch_adguard_data(
+//     client: &reqwest::Client,
+//     endpoint: &str,
+//     username: &str,
+//     password: &str,
+// ) -> Result<QueryResponse, Box<dyn Error>> {
     let auth_string = format!("{}:{}", username, password);
     let auth_header_value = format!("Basic {}", base64::encode(&auth_string));
     let mut headers = reqwest::header::HeaderMap::new();
@@ -85,7 +94,7 @@ async fn fetch_adguard_data(
     let url = format!("{}/control/querylog", endpoint);
     let response = client.get(&url).headers(headers).send().await?;
     if !response.status().is_success() {
-        return Err(format!("Request failed with status code {}", response.status()).into());
+        return Err(anyhow::anyhow!("Request failed with status code {}", response.status()));
     }
 
     // let response_text = response.text().await?;
@@ -98,7 +107,7 @@ async fn fetch_adguard_data(
 }
 
 
-fn time_ago(timestamp: &str) -> Result<String, Box<dyn std::error::Error>> {
+fn time_ago(timestamp: &str) -> Result<String, anyhow::Error> {
     let datetime = DateTime::parse_from_rfc3339(timestamp)?;
     let datetime_utc = datetime.with_timezone(&Utc);
     let now = Utc::now();
@@ -112,11 +121,13 @@ fn time_ago(timestamp: &str) -> Result<String, Box<dyn std::error::Error>> {
     }
 }
 
-fn make_request_cell(q: &Question) -> Result<String, Box<dyn std::error::Error>> {
+fn make_request_cell(q: &Question) -> Result<String, anyhow::Error> {
+// fn make_request_cell(q: &Question) -> Result<String, Box<dyn std::error::Error>> {
     Ok(format!("[{}] {} - {}", q.class, q.question_type, q.name))
 }
 
-fn make_time_taken_and_color(elapsed: &str) -> Result<(String, Color), Box<dyn std::error::Error>> {
+fn make_time_taken_and_color(elapsed: &str) -> Result<(String, Color), anyhow::Error> {
+// fn make_time_taken_and_color(elapsed: &str) -> Result<(String, Color), Box<dyn std::error::Error>> {
     let elapsed_f64 = elapsed.parse::<f64>()?;
     let rounded_elapsed = (elapsed_f64 * 100.0).round() / 100.0;
     let time_taken = format!("{:.2} ms", rounded_elapsed);
@@ -130,7 +141,8 @@ fn make_time_taken_and_color(elapsed: &str) -> Result<(String, Color), Box<dyn s
     Ok((time_taken, color))
 }
 
-fn make_time_taken(elapsed: &str) -> Result<String, Box<dyn std::error::Error>> {
+fn make_time_taken(elapsed: &str) -> Result<String, anyhow::Error> {
+// fn make_time_taken(elapsed: &str) -> Result<String, Box<dyn std::error::Error>> {
     let elapsed_f64 = elapsed.parse::<f64>()?;
     let rounded_elapsed = (elapsed_f64 * 100.0).round() / 100.0;
     Ok(format!("{:.2} ms", rounded_elapsed))
@@ -171,7 +183,9 @@ fn block_status_text(reason: &str, cached: bool) -> (String, Color) {
 }
 
 
-async fn draw_ui(data: Vec<Query>) -> Result<(), Box<dyn std::error::Error>> {
+// async fn draw_ui(data: Vec<Query>) -> Result<(), Box<dyn std::error::Error>> {
+    async fn draw_ui(mut data_rx: tokio::sync::mpsc::Receiver<Vec<Query>>) -> Result<(), anyhow::Error> {
+    // async fn draw_ui(mut data_rx: tokio::sync::mpsc::Receiver<Vec<Query>>) -> Result<(), Box<dyn std::error::Error>> {
     enable_raw_mode()?;
     let mut stdout = stdout();
     execute!(stdout, EnterAlternateScreen, EnableMouseCapture)?;
@@ -179,7 +193,12 @@ async fn draw_ui(data: Vec<Query>) -> Result<(), Box<dyn std::error::Error>> {
     let mut terminal = Terminal::new(backend)?;
     terminal.clear()?;
 
+
     loop {
+        let data = match data_rx.recv().await {
+            Some(data) => data,
+            None => break, // Channel has been closed, so we break the loop
+        };
         terminal.draw(|f| {
             let size = f.size();
             let block = Block::default()
@@ -273,9 +292,12 @@ async fn draw_ui(data: Vec<Query>) -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-use tokio::time::interval;
+async fn run() -> Result<(), anyhow::Error> {
+// async fn run() -> Result<(), Box<dyn std::error::Error>> {
+    let (data_tx, data_rx) = tokio::sync::mpsc::channel(1);
 
-async fn run() -> Result<(), Box<dyn std::error::Error>> {
+    let draw_ui_task = tokio::spawn(draw_ui(data_rx));
+
     let client = Client::new();
     let hostname = "http://192.168.130.2:8083";
     let username = "admin";
@@ -284,13 +306,31 @@ async fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     loop {
         let data = fetch_adguard_data(&client, hostname, username, password).await?;
-        draw_ui(data.data).await?;
+        data_tx.send(data.data).await;
         interval.tick().await;
     }
+
+    draw_ui_task.await??;
+    Ok(())
 }
 
+// async fn run() -> Result<(), Box<dyn std::error::Error>> {
+//     let client = Client::new();
+//     let hostname = "http://192.168.130.2:8083";
+//     let username = "admin";
+//     let password = "uPbxy1G8g0xO83nw";
+//     let mut interval = interval(Duration::from_secs(5));
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+//     loop {
+//         let data = fetch_adguard_data(&client, hostname, username, password).await?;
+//         draw_ui(data.data).await?;
+//         interval.tick().await;
+//     }
+// }
+
+
+fn main() -> Result<(), anyhow::Error> {
+// fn main() -> Result<(), Box<dyn std::error::Error>> {
     let rt = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()?;
