@@ -6,15 +6,21 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tui = { package = "ratatui" }
-futures = "0.3"
-chrono = "0.4"
-colored = "2.0"
-euclid = "0.22.5"
+# Error objecr for idiomatic error handling
 anyhow = "1.0"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+# For encoding auth headers
 base64 = "0.13"
+# Date + time parsing + manipulating
+chrono = "0.4"
+# Term manipulation for kb + mouse events
 crossterm = { version = "0.22.0", features = ["serde"] }
+# Extension of futures for async computation
+futures = "0.3"
+# HTTP client
 reqwest = { version = "0.11", default-features = false, features = ["blocking", "json", "rustls-tls"] }
+# Decerilization of JSON responses
+serde = { version = "1.0", features = ["derive"] }
+# Date + time manipulation
 tokio = { version = "1", features = ["full"] }
+# Terminal UI library
+tui = { package = "ratatui" }
