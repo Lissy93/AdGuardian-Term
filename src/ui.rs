@@ -13,15 +13,37 @@ use tui::{
   backend::CrosstermBackend,
   layout::{Constraint, Direction, Layout},
   style::{Color, Modifier, Style},
-  widgets::{Block, Borders, Cell, Row, Table},
+  widgets::{Block, Borders, Cell, Row, Table, Gauge},
+  text::{Span, Spans},
   Terminal,
 };
 
+use crate::fetch_stats::{StatsResponse};
+
 use crate::fetch::{Query, Question};
 
-pub 
-async fn draw_ui(
-    mut data_rx: tokio::sync::mpsc::Receiver<Vec<Query>>, 
+fn make_gauge(stats: &StatsResponse) -> Gauge {
+
+  let totalBlocked = stats.num_blocked_filtering
+    + stats.num_replaced_parental
+    + stats.num_replaced_safebrowsing
+    + stats.num_replaced_safesearch;
+
+  let percent = (totalBlocked as f64 / stats.num_dns_queries as f64 * 100.0) as u16;
+
+  let label = format!("Blocked {} out of {} requests ({}%)", totalBlocked, stats.num_dns_queries, percent);
+
+  Gauge::default()
+      .block(Block::default().title("Block Percentage")
+      .borders(Borders::ALL))
+      .gauge_style(Style::default().fg(Color::Red).bg(Color::Green))
+      .percent(percent)
+      .label(label)
+}
+
+pub async fn draw_ui(
+    mut data_rx: tokio::sync::mpsc::Receiver<Vec<Query>>,
+    mut stats_rx: tokio::sync::mpsc::Receiver<StatsResponse>,
     shutdown: Arc<tokio::sync::Notify>
 ) -> Result<(), anyhow::Error> {
     enable_raw_mode()?;
@@ -33,16 +55,44 @@ async fn draw_ui(
 
 
     loop {
+        // Recieve query log and stats data from the fetcher
         let data = match data_rx.recv().await {
             Some(data) => data,
             None => break, // Channel has been closed, so we break the loop
         };
+        let stats = match stats_rx.recv().await {
+          Some(stats) => stats,
+          None => break,
+        };
+
+        
+
         terminal.draw(|f| {
-            let size = f.size();
+          let size = f.size();
+
+          // Draw the gauge chart
+          let gauge = make_gauge(&stats);
+          
+            // Split the layout into two parts for the table and the gauge
+            let chunks = Layout::default()
+                .direction(Direction::Vertical)
+                .margin(1)
+                .constraints(
+                    [
+                        Constraint::Length(3),  // For the title block "AdGuard Dashboard"
+                        Constraint::Length(3),  // For the gauge
+                        Constraint::Min(1),     // For the query log table
+                    ]
+                    .as_ref(),
+                )
+                .split(size);
+
+            // Render the gauge
+            f.render_widget(gauge, chunks[0]);
+
             let block = Block::default()
                 .title("AdGuard Dashboard")
-                .borders(Borders::ALL)
-                .style(Style::default().fg(Color::White));
+                .style(Style::default().fg(Color::Reset));
             f.render_widget(block, size);
 
             let rows = data.iter().map(|query| {
