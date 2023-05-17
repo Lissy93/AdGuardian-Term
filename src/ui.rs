@@ -13,8 +13,9 @@ use tui::{
   backend::CrosstermBackend,
   layout::{Constraint, Direction, Layout},
   style::{Color, Modifier, Style},
-  widgets::{Block, Borders, Cell, Row, Table, Gauge},
-  text::{Span, Spans},
+  widgets::{Axis, Block, Borders, Cell, Row, Table, Gauge, Chart, Dataset},
+  text::{Span},
+  symbols,
   Terminal,
 };
 
@@ -24,14 +25,14 @@ use crate::fetch::{Query, Question};
 
 fn make_gauge(stats: &StatsResponse) -> Gauge {
 
-  let totalBlocked = stats.num_blocked_filtering
+  let total_blocked = stats.num_blocked_filtering
     + stats.num_replaced_parental
     + stats.num_replaced_safebrowsing
     + stats.num_replaced_safesearch;
 
-  let percent = (totalBlocked as f64 / stats.num_dns_queries as f64 * 100.0) as u16;
+  let percent = (total_blocked as f64 / stats.num_dns_queries as f64 * 100.0) as u16;
 
-  let label = format!("Blocked {} out of {} requests ({}%)", totalBlocked, stats.num_dns_queries, percent);
+  let label = format!("Blocked {} out of {} requests ({}%)", total_blocked, stats.num_dns_queries, percent);
 
   Gauge::default()
       .block(Block::default().title("Block Percentage")
@@ -40,6 +41,145 @@ fn make_gauge(stats: &StatsResponse) -> Gauge {
       .percent(percent)
       .label(label)
 }
+
+fn make_query_table<'a>(data: &'a [Query]) -> Table<'a> {
+  let rows = data.iter().map(|query| {
+      let time = Cell::from(
+          time_ago(query.time.as_str()).unwrap_or("unknown".to_string())
+      ).style(Style::default().fg(Color::Gray));
+
+      let question = Cell::from(make_request_cell(&query.question).unwrap())
+          .style(Style::default().add_modifier(Modifier::BOLD));
+
+      let client = Cell::from(query.client.as_str())
+          .style(Style::default().fg(Color::Blue));
+
+      let (time_taken, elapsed_color) = make_time_taken_and_color(&query.elapsed_ms).unwrap();
+      let elapsed_ms = Cell::from(time_taken).style(Style::default().fg(elapsed_color));
+
+      let (status_txt, status_color) = block_status_text(&query.reason, query.cached);
+      let status = Cell::from(status_txt).style(Style::default().fg(status_color));
+
+      let color = make_row_color(&query.reason);
+      Row::new(vec![time, question, status, client, elapsed_ms])
+          .style(Style::default().fg(color))
+  }).collect::<Vec<Row>>(); // Clone the data here
+
+  let table = Table::new(rows) // Table now owns its data
+      .header(Row::new(vec![
+        Cell::from(Span::raw("Time")),
+        Cell::from(Span::raw("Request")),
+        Cell::from(Span::raw("Status")),
+        Cell::from(Span::raw("Client")),
+        Cell::from(Span::raw("Time Taken")),
+      ]))
+      .block(Block::default().title("Query Log").borders(Borders::ALL))
+      .widths(&[
+        Constraint::Percentage(15),
+        Constraint::Percentage(35),
+        Constraint::Percentage(15),
+        Constraint::Percentage(20),
+        Constraint::Percentage(15),
+      ]);
+
+  table
+}
+
+fn make_history_datasets<'a>(stats: &'a StatsResponse) -> Vec<Dataset<'a>> {
+  let dns_queries_dataset = Dataset::default()
+      .name("DNS Queries")
+      .marker(symbols::Marker::Braille)
+      .style(Style::default().fg(Color::Green))
+      .data(&stats.dns_queries_chart);
+
+  let blocked_filtering_dataset = Dataset::default()
+      .name("Blocked Filtering")
+      .marker(symbols::Marker::Braille)
+      .style(Style::default().fg(Color::Red))
+      .data(&stats.blocked_filtering_chart);
+
+  let datasets = vec![dns_queries_dataset, blocked_filtering_dataset];
+
+  datasets
+}
+
+fn find_bounds(stats: &StatsResponse) -> (f64, f64) {
+    let mut max_length = 0;
+    let mut max_value = f64::MIN;
+
+    for dataset in &[&stats.dns_queries_chart, &stats.blocked_filtering_chart] {
+        let length = dataset.len();
+        if length > max_length {
+            max_length = length;
+        }
+
+        let max_in_dataset = dataset
+            .iter()
+            .map(|&(_, y)| y)
+            .fold(f64::MIN, f64::max);
+        if max_in_dataset > max_value {
+            max_value = max_in_dataset;
+        }
+    }
+    (max_length as f64, max_value)
+}
+
+fn make_history_chart<'a>(stats: &'a StatsResponse) -> Chart<'a> {
+    // Convert datasets into vector that can be consumed by chart
+    let datasets = make_history_datasets(&stats);
+    // Find uppermost x and y-axis bounds for chart
+    let (x_bound, y_bound) = find_bounds(&stats);
+    // Create chart
+    let chart = Chart::new(datasets)
+        .block(Block::default().title("History").borders(Borders::ALL))
+        .x_axis(Axis::default().title("Time (Days)").bounds([0.0, x_bound]))
+        .y_axis(Axis::default().title("Query Count").bounds([0.0, y_bound]));
+
+    chart
+}
+
+fn convert_to_chart_data(data: Vec<f64>) -> Vec<(f64, f64)> {
+  data.iter().enumerate().map(|(i, &v)| (i as f64, v)).collect()
+}
+
+// Interpolates data, adding n number of points, to make the chart look smoother
+fn interpolate(input: &Vec<f64>, points_between: usize) -> Vec<f64> {
+    let mut output = Vec::new();
+
+    for window in input.windows(2) {
+        let start = window[0];
+        let end = window[1];
+        let step = (end - start) / (points_between as f64 + 1.0);
+
+        output.push(start);
+        for i in 1..=points_between {
+            output.push(start + step * i as f64);
+        }
+    }
+
+    output.push(*input.last().unwrap());
+    output
+}
+
+// Adds data formatted for the time-series chart to the stats object
+fn prepare_data(stats: &mut StatsResponse) {
+    let dns_queries = stats.dns_queries.iter().map(|&v| v as f64).collect::<Vec<_>>();
+    let interpolated_dns_queries = interpolate(&dns_queries, 3);
+    stats.dns_queries_chart = convert_to_chart_data(interpolated_dns_queries);
+    
+    let blocked_filtering: Vec<f64> = stats.blocked_filtering.iter()
+        .zip(&stats.replaced_safebrowsing)
+        .zip(&stats.replaced_parental)
+        .map(|((&b, &s), &p)| (b + s + p) as f64)
+        .collect();
+    
+    let interpolated_blocked_filtering = interpolate(&blocked_filtering, 3);
+    let blocked_filtering_chart: Vec<(f64, f64)> = convert_to_chart_data(interpolated_blocked_filtering);
+    
+    stats.blocked_filtering_chart = blocked_filtering_chart;
+}
+
+
 
 pub async fn draw_ui(
     mut data_rx: tokio::sync::mpsc::Receiver<Vec<Query>>,
@@ -53,100 +193,52 @@ pub async fn draw_ui(
     let mut terminal = Terminal::new(backend)?;
     terminal.clear()?;
 
-
     loop {
         // Recieve query log and stats data from the fetcher
         let data = match data_rx.recv().await {
             Some(data) => data,
             None => break, // Channel has been closed, so we break the loop
         };
-        let stats = match stats_rx.recv().await {
+        let mut stats = match stats_rx.recv().await {
           Some(stats) => stats,
           None => break,
         };
 
-        
+        // Prepare the data for the chart
+        prepare_data(&mut stats);
 
         terminal.draw(|f| {
           let size = f.size();
 
-          // Draw the gauge chart
+          // Make the charts
           let gauge = make_gauge(&stats);
-          
-            // Split the layout into two parts for the table and the gauge
-            let chunks = Layout::default()
-                .direction(Direction::Vertical)
-                .margin(1)
-                .constraints(
-                    [
-                        Constraint::Length(3),  // For the title block "AdGuard Dashboard"
-                        Constraint::Length(3),  // For the gauge
-                        Constraint::Min(1),     // For the query log table
-                    ]
-                    .as_ref(),
-                )
-                .split(size);
+          let table = make_query_table(&data);
+          let graph = make_history_chart(&stats);
 
-            // Render the gauge
-            f.render_widget(gauge, chunks[0]);
+          
+            // Split the layout into parts
+            let chunks = Layout::default()
+            .direction(Direction::Vertical)
+            .margin(1)
+            .constraints(
+                [
+                    Constraint::Length(3),
+                    Constraint::Percentage(50),
+                    Constraint::Percentage(40),
+                ]
+                .as_ref(),
+            )
+            .split(size);
 
             let block = Block::default()
-                .title("AdGuard Dashboard")
-                .style(Style::default().fg(Color::Reset));
+              .title("AdGuard Dashboard")
+              .style(Style::default().fg(Color::Reset));
             f.render_widget(block, size);
 
-            let rows = data.iter().map(|query| {
-                
-                let time = Cell::from(
-                    time_ago(query.time.as_str()).unwrap_or("unknown".to_string())
-                ).style(Style::default().fg(Color::Gray));
-                
-                let question = Cell::from(make_request_cell(&query.question).unwrap())
-                    .style(Style::default().add_modifier(Modifier::BOLD));
-                
-                let client = Cell::from(query.client.as_str())
-                    .style(Style::default().fg(Color::Blue));
-                
-                let (time_taken, elapsed_color) = make_time_taken_and_color(&query.elapsed_ms).unwrap();
-                let elapsed_ms = Cell::from(time_taken).style(Style::default().fg(elapsed_color));
-                                    
-                let (status_txt, status_color) = block_status_text(&query.reason, query.cached);
-                let status = Cell::from(status_txt).style(Style::default().fg(status_color));
-                    
-                let color = make_row_color(&query.reason);
-                Row::new(vec![time, question, status, client, elapsed_ms]).style(Style::default().fg(color))
-            });
-
-            let table = Table::new(rows)
-                .header(Row::new(vec![
-                    Cell::from("Time"),
-                    Cell::from("Request"),
-                    Cell::from("Status"),
-                    Cell::from("Client"),
-                    Cell::from("Time Taken"),
-                ]))
-                .block(Block::default().title("Query Log").borders(Borders::ALL))
-                .widths(&[
-                    Constraint::Percentage(15),
-                    Constraint::Percentage(35),
-                    Constraint::Percentage(15),
-                    Constraint::Percentage(20),
-                    Constraint::Percentage(15),
-                ]);
-
-            let chunks = Layout::default()
-                .direction(Direction::Vertical)
-                .margin(1)
-                .constraints(
-                    [
-                        Constraint::Length(3),
-                        Constraint::Min(1),
-                    ]
-                    .as_ref(),
-                )
-                .split(size);
-
+            f.render_widget(gauge, chunks[0]);
             f.render_widget(table, chunks[1]);
+            f.render_widget(graph, chunks[2]);
+  
         })?;
 
         // Check for user input events

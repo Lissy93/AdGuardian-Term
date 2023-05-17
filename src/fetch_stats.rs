@@ -3,7 +3,7 @@ use reqwest::{
 };
 use serde::Deserialize;
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct StatsResponse {
     pub num_dns_queries: u64,
     pub num_blocked_filtering: u64,
@@ -11,6 +11,15 @@ pub struct StatsResponse {
     pub num_replaced_safesearch: u64,
     pub num_replaced_parental: u64,
     pub avg_processing_time: f64,
+    pub dns_queries: Vec<u64>,
+    pub blocked_filtering: Vec<u64>,
+    pub replaced_safebrowsing: Vec<u64>,
+    pub replaced_parental: Vec<u64>,
+
+    #[serde(default, skip_deserializing)]
+    pub dns_queries_chart: Vec<(f64, f64)>,
+    #[serde(default, skip_deserializing)]
+    pub blocked_filtering_chart: Vec<(f64, f64)>,
 }
 
 pub async fn fetch_adguard_stats(
