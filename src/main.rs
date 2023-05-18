@@ -2,9 +2,10 @@
 mod fetch;
 mod fetch_stats;
 mod ui;
+mod widgets;
 
 use fetch::{ fetch_adguard_data };
-use fetch_stats::{ fetch_adguard_stats, StatsResponse };
+use fetch_stats::fetch_adguard_stats;
 use ui::{ draw_ui };
 use std::{sync::Arc, time::Duration};
 use reqwest::{Client};
