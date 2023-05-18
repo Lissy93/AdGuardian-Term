@@ -27,7 +27,7 @@ pub struct Question {
     pub question_type: String,
 }
 
-pub async fn fetch_adguard_data(
+pub async fn fetch_adguard_query_log(
   client: &reqwest::Client,
   endpoint: &str,
   username: &str,

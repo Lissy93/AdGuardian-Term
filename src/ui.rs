@@ -13,11 +13,11 @@ use tui::{
   layout::{Constraint, Direction, Layout},
   style::{Color, Style},
   widgets::Block,
-  Terminal,
+  Terminal, 
 };
 
-use crate::fetch_stats::{StatsResponse};
-use crate::fetch::Query;
+use crate::fetch::fetch_stats::StatsResponse;
+use crate::fetch::fetch_query_log::Query;
 
 use crate::widgets::gauge::make_gauge;
 use crate::widgets::table::make_query_table;

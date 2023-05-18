@@ -3,7 +3,7 @@ use tui::{
   widgets::{Block, Borders, Gauge},
 };
 
-use crate::fetch_stats::{StatsResponse};
+use crate::fetch::fetch_stats::StatsResponse;
 
 pub fn make_gauge(stats: &StatsResponse) -> Gauge {
 
