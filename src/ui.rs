@@ -124,22 +124,52 @@ fn find_bounds(stats: &StatsResponse) -> (f64, f64) {
     (max_length as f64, max_value)
 }
 
+fn generate_x_labels(max_days: i32, num_labels: i32) -> Vec<Span<'static>> {
+    let step = (max_days / (num_labels - 1)) as i32;
+    (0..num_labels)
+        .map(|i| {
+            let day = (max_days - i * step).to_string();
+            if i == num_labels - 1 {
+                Span::styled("Today", Style::default().add_modifier(Modifier::BOLD))
+            } else {
+                Span::raw(day)
+            }
+        })
+        .collect()
+}
+
+fn generate_y_labels(max: i32, count: usize) -> Vec<Span<'static>> {
+    let step = max / (count - 1) as i32;
+    let labels = (0..count)
+        .map(|x| Span::raw(format!("{}", x * step as usize)))
+        .collect::<Vec<Span<'static>>>();
+    labels
+}
+
 fn make_history_chart<'a>(stats: &'a StatsResponse) -> Chart<'a> {
     // Convert datasets into vector that can be consumed by chart
     let datasets = make_history_datasets(&stats);
     // Find uppermost x and y-axis bounds for chart
     let (x_bound, y_bound) = find_bounds(&stats);
+    // Generate incremental labels from data's values, to render on axis
+    let x_labels = generate_x_labels(stats.dns_queries.len() as i32, 5);
+    let y_labels = generate_y_labels(y_bound as i32, 5);
     // Create chart
     let chart = Chart::new(datasets)
         .block(Block::default().title("History").borders(Borders::ALL))
-        .x_axis(Axis::default().title("Time (Days)").bounds([0.0, x_bound]))
-        .y_axis(Axis::default().title("Query Count").bounds([0.0, y_bound]));
+        .x_axis(
+            Axis::default()
+            .title("Time (Days ago)")
+            .bounds([0.0, x_bound])
+            .labels(x_labels),
+        )
+        .y_axis(Axis::default().title("Query Count").labels(y_labels).bounds([0.0, y_bound]));
 
     chart
 }
 
 fn convert_to_chart_data(data: Vec<f64>) -> Vec<(f64, f64)> {
-  data.iter().enumerate().map(|(i, &v)| (i as f64, v)).collect()
+    data.iter().enumerate().map(|(i, &v)| (i as f64, v)).collect()
 }
 
 // Interpolates data, adding n number of points, to make the chart look smoother
@@ -224,7 +254,7 @@ pub async fn draw_ui(
                 [
                     Constraint::Length(3),
                     Constraint::Percentage(50),
-                    Constraint::Percentage(40),
+                    Constraint::Percentage(20),
                 ]
                 .as_ref(),
             )
