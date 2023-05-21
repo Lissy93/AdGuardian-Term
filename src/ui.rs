@@ -10,8 +10,7 @@ use crossterm::{
 };
 use tui::{
   backend::CrosstermBackend,
-  layout::{Rect,Constraint, Direction, Layout},
-  widgets::Block,
+  layout::{Constraint, Direction, Layout},
   Terminal,
 };
 
@@ -47,7 +46,7 @@ pub async fn draw_ui(
             Some(stats) => stats,
             None => break,
         };
-        let mut status = match status_rx.recv().await {
+        let status = match status_rx.recv().await {
             Some(status) => status,
             None => break,
         };
@@ -80,7 +79,6 @@ pub async fn draw_ui(
             // Split the top part (charts + gauge) into left (gauge + block) and right (line chart)
             let top_chunks = Layout::default()
             .direction(Direction::Horizontal)
-            .margin(1)
             .constraints(
                 [
                     Constraint::Percentage(30), 
@@ -92,20 +90,19 @@ pub async fn draw_ui(
 
             // Split the left part of top (gauge + block) into top (gauge) and bottom (block)
             let left_chunks = Layout::default()
-            .direction(Direction::Vertical)
-            .margin(1)
-            .constraints(
-                [
-                    Constraint::Percentage(50), 
-                    Constraint::Percentage(50), 
-                ]
-                .as_ref(),
-            )
-            .split(top_chunks[0]);
+                .direction(Direction::Vertical)
+                .constraints(
+                    [
+                        Constraint::Min(0),
+                        Constraint::Length(3),
+                    ]
+                    .as_ref(),
+                )
+                .split(top_chunks[0]);
 
             // Render your widgets here
-            f.render_widget(gauge, left_chunks[0]);
-            f.render_widget(paragraph, left_chunks[1]);
+            f.render_widget(paragraph, left_chunks[0]);
+            f.render_widget(gauge, left_chunks[1]);
             f.render_widget(graph, top_chunks[1]);
             f.render_widget(table, chunks[1]);
             
