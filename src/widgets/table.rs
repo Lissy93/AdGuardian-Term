@@ -40,7 +40,13 @@ pub fn make_query_table<'a>(data: &'a [Query]) -> Table<'a> {
         Cell::from(Span::raw("Client")),
         Cell::from(Span::raw("Time Taken")),
       ]))
-      .block(Block::default().title("Query Log").borders(Borders::ALL))
+      .block(
+        Block::default()
+          .title(Span::styled(
+            "Query Log",
+            Style::default().add_modifier(Modifier::BOLD),
+          ))
+          .borders(Borders::ALL))
       .widths(&[
         Constraint::Percentage(15),
         Constraint::Percentage(35),

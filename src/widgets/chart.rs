@@ -1,34 +1,41 @@
 
 use tui::{
-  style::{Color, Modifier, Style},
-  widgets::{Axis, Block, Borders, Dataset, Chart},
-  text::{Span},
-  symbols,
+    style::{Color, Modifier, Style},
+    widgets::{Axis, Block, Borders, Dataset, Chart},
+    text::{Span},
+    symbols,
 };
 
 use crate::fetch::fetch_stats::{StatsResponse};
 
 
 pub fn make_history_chart<'a>(stats: &'a StatsResponse) -> Chart<'a> {
-  // Convert datasets into vector that can be consumed by chart
-  let datasets = make_history_datasets(&stats);
-  // Find uppermost x and y-axis bounds for chart
-  let (x_bound, y_bound) = find_bounds(&stats);
-  // Generate incremental labels from data's values, to render on axis
-  let x_labels = generate_x_labels(stats.dns_queries.len() as i32, 5);
-  let y_labels = generate_y_labels(y_bound as i32, 5);
-  // Create chart
-  let chart = Chart::new(datasets)
-      .block(Block::default().title("History").borders(Borders::ALL))
-      .x_axis(
-          Axis::default()
-          .title("Time (Days ago)")
-          .bounds([0.0, x_bound])
-          .labels(x_labels),
-      )
-      .y_axis(Axis::default().title("Query Count").labels(y_labels).bounds([0.0, y_bound]));
+    // Convert datasets into vector that can be consumed by chart
+    let datasets = make_history_datasets(&stats);
+    // Find uppermost x and y-axis bounds for chart
+    let (x_bound, y_bound) = find_bounds(&stats);
+    // Generate incremental labels from data's values, to render on axis
+    let x_labels = generate_x_labels(stats.dns_queries.len() as i32, 5);
+    let y_labels = generate_y_labels(y_bound as i32, 5);
+    // Create chart
+    let chart = Chart::new(datasets)
+        .block(
+            Block::default()
+            .title(Span::styled(
+                "History",
+                Style::default().add_modifier(Modifier::BOLD),
+            ))
+            .borders(Borders::ALL)
+        )
+        .x_axis(
+            Axis::default()
+            .title("Time (Days ago)")
+            .bounds([0.0, x_bound])
+            .labels(x_labels),
+        )
+        .y_axis(Axis::default().title("Query Count").labels(y_labels).bounds([0.0, y_bound]));
 
-  chart
+    chart
 }
 
 // Returns a dataset that's consumable by the chart widget
