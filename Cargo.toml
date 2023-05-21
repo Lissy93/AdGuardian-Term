@@ -23,4 +23,4 @@ serde = { version = "1.0", features = ["derive"] }
 # Date + time manipulation
 tokio = { version = "1", features = ["full"] }
 # Terminal UI library
-tui = { package = "ratatui" }
+tui = { package = "ratatui", version = "0.20.1" }
