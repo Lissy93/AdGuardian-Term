@@ -17,21 +17,49 @@ fn print_error(address: String, error: Option<Error>) {
     println!("{}", "Exiting...".blue());
 }
 
+fn print_ascii_art() {
+    let art = r"
+ █████╗ ██████╗  ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ ██╗ █████╗ ███╗   ██╗
+██╔══██╗██╔══██╗██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗████╗  ██║
+███████║██║  ██║██║  ███╗██║   ██║███████║██████╔╝██║  ██║██║███████║██╔██╗ ██║
+██╔══██║██║  ██║██║   ██║██║   ██║██╔══██║██╔══██╗██║  ██║██║██╔══██║██║╚██╗██║
+██║  ██║██████╔╝╚██████╔╝╚██████╔╝██║  ██║██║  ██║██████╔╝██║██║  ██║██║ ╚████║
+╚═╝  ╚═╝╚═════╝  ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
+";
+    println!("{}", art.green());
+
+    println!("{}", "\nWelcome to AdGuardian Terminal Edition!".green());
+    println!("{}", "Terminal-based, real-time traffic monitoring and statistics for your AdGuard Home instance".green().italic().dimmed());
+    println!("{}", "For documentation and support, please visit: https://github.com/lissy93/adguardian-term\n".green().italic().dimmed());
+}
+
+
 pub async fn welcome() -> Result<(), Box<dyn std::error::Error>> {
+    print_ascii_art();
+
+    println!("{}", "Starting initialization checks...".blue());
+
     let client = Client::new();
 
     for &key in &["ADGUARD_IP", "ADGUARD_PORT", "ADGUARD_USERNAME", "ADGUARD_PASSWORD"] {
         if env::var(key).is_err() {
-            println!("{}", format!("\nThe {} environmental variable is not set", key.bold()).yellow());
-
-            print!("{}", format!("Enter a value for {}: ", key).cyan().bold());
+            println!("{}", format!("The {} environmental variable is not yet set", key.bold()).yellow());
+    
+            print!("{}", format!("› Enter a value for {}: ", key).blue().bold());
             io::stdout().flush()?;
-
+    
             let mut value = String::new();
             io::stdin().read_line(&mut value)?;
             env::set_var(key, value.trim());
         }
+    
+        if key.contains("PASSWORD") {
+            println!("{}", format!("{} is set to ******", key.bold()).green());
+        } else {
+            println!("{}", format!("{} is set to {}", key.bold(), env::var(key).unwrap()).green());
+        }
     }
+    
 
     let ip = env::var("ADGUARD_IP").unwrap();
     let port = env::var("ADGUARD_PORT").unwrap();
@@ -57,7 +85,7 @@ pub async fn welcome() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     if res.status().is_success() {
-        println!("{}", "AdGuard connection successful!".green());
+        println!("{}", "AdGuard connection successful!\n".green());
     } else {
         print_error(format!("{}:{}", ip, port), None);
         std::process::exit(1);
