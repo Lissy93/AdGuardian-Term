@@ -9,21 +9,9 @@ use fetch::fetch_stats::fetch_adguard_stats;
 use fetch::fetch_status::fetch_adguard_status;
 
 use ui::{ draw_ui };
-use std::{sync::Arc, time::Duration};
+use std::{sync::Arc, time::Duration, env};
 use reqwest::{Client};
 use tokio::time::interval;
-
-fn get_update_interval() -> u64 {
-    match env::var("ADGUARDIAN_UPDATE_INTERVAL") {
-        Ok(val) => {
-            match val.parse::<u64>() {
-                Ok(val) => val,
-                Err(_) => 3
-            }
-        },
-        Err(_) => 3
-    }
-}
 
 async fn run() -> Result<(), anyhow::Error> {
 
@@ -40,11 +28,18 @@ async fn run() -> Result<(), anyhow::Error> {
 
     let ip = env::var("ADGUARD_IP").unwrap();
     let port = env::var("ADGUARD_PORT").unwrap();
-    let username = env::var("ADGUARD_USERNAME").unwrap();
-    let password = env::var("ADGUARD_PASSWORD").unwrap();
-    let hostname = format!("http://{}:{}", ip, port);
+    let hostname = &(format!("http://{}:{}", ip, port));
+    let username = &env::var("ADGUARD_USERNAME").unwrap();
+    let password = &env::var("ADGUARD_PASSWORD").unwrap();
+    
 
-    let mut interval = interval(Duration::from_secs(3));
+
+    let interval_secs: u64 = env::var("ADGUARD_UPDATE_INTERVAL")
+        .unwrap_or("3".to_string())
+        .parse()
+        .expect("Failed to parse ADGUARD_UPDATE_INTERVAL into a u64");
+
+    let mut interval = interval(Duration::from_secs(interval_secs));
     
     loop {
         tokio::select! {
