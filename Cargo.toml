@@ -1,7 +1,11 @@
 [package]
-name = "adguardian-tui"
+name = "adguardian"
 version = "0.1.0"
 edition = "2021"
+authors = ["Alicia Sykes"]
+description = "A terminal dashboard for monitoring AdGuard Home DNS stats"
+repository = "https://github.com/lissy93/adguardian"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -16,6 +20,8 @@ chrono = "0.4"
 crossterm = { version = "0.22.0", features = ["serde"] }
 # Extension of futures for async computation
 futures = "0.3"
+# Handling of terminal colors
+colored = "2.0"
 # HTTP client
 reqwest = { version = "0.11", default-features = false, features = ["blocking", "json", "rustls-tls"] }
 # Decerilization of JSON responses
