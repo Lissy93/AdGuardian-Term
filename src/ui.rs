@@ -17,16 +17,19 @@ use tui::{
 use crate::fetch::fetch_stats::StatsResponse;
 use crate::fetch::fetch_query_log::Query;
 use crate::fetch::fetch_status::StatusResponse;
+use crate::fetch::fetch_filters::AdGuardFilteringStatus;
 
 use crate::widgets::gauge::make_gauge;
 use crate::widgets::table::make_query_table;
 use crate::widgets::chart::{make_history_chart, prepare_chart_data};
 use crate::widgets::status::render_status_paragraph;
+use crate::widgets::filters::make_filters_list;
 
 pub async fn draw_ui(
     mut data_rx: tokio::sync::mpsc::Receiver<Vec<Query>>,
     mut stats_rx: tokio::sync::mpsc::Receiver<StatsResponse>,
     mut status_rx: tokio::sync::mpsc::Receiver<StatusResponse>,
+    mut filters: AdGuardFilteringStatus,
     shutdown: Arc<tokio::sync::Notify>
 ) -> Result<(), anyhow::Error> {
     enable_raw_mode()?;
@@ -62,18 +65,25 @@ pub async fn draw_ui(
             let table = make_query_table(&data);
             let graph = make_history_chart(&stats);
             let paragraph = render_status_paragraph(&status);
+            let filters = make_filters_list(filters.filters.as_slice(), size.width);
 
+            let constraints = if size.height > 42 {
+                vec![
+                    Constraint::Percentage(30),
+                    Constraint::Min(1),
+                    Constraint::Percentage(20)
+                ]
+            } else {
+                vec![
+                    Constraint::Percentage(30),
+                    Constraint::Min(1),
+                    Constraint::Percentage(0)
+                ]
+            };
 
             let chunks = Layout::default()
             .direction(Direction::Vertical)
-            .margin(1)
-            .constraints(
-                [
-                    Constraint::Percentage(30), // The top row (gauge + status, and the history chart)
-                    Constraint::Min(1), // The query log table
-                ]
-                .as_ref(),
-            )
+            .constraints(&*constraints)
             .split(size);
 
             // Split the top part (charts + gauge) into left (gauge + block) and right (line chart)
@@ -100,12 +110,27 @@ pub async fn draw_ui(
                 )
                 .split(top_chunks[0]);
 
-            // Render your widgets here
+            let bottom_chunks = Layout::default()
+                .direction(Direction::Horizontal)
+                .constraints(
+                    [
+                        Constraint::Percentage(25), 
+                        Constraint::Percentage(25), 
+                        Constraint::Percentage(25), 
+                        Constraint::Percentage(25), 
+                    ]
+                    .as_ref(),
+                )
+                .split(chunks[2]);
+
+            // Render the widgets to the UI
             f.render_widget(paragraph, left_chunks[0]);
             f.render_widget(gauge, left_chunks[1]);
             f.render_widget(graph, top_chunks[1]);
             f.render_widget(table, chunks[1]);
-            
+            if size.height > 42 {
+                f.render_widget(filters, bottom_chunks[0]);
+            }
         })?;
 
         // Check for user input events
