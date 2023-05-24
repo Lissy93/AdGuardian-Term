@@ -11,6 +11,7 @@ use crossterm::{
 use tui::{
   backend::CrosstermBackend,
   layout::{Constraint, Direction, Layout},
+  style::Color,
   Terminal,
 };
 
@@ -24,12 +25,13 @@ use crate::widgets::table::make_query_table;
 use crate::widgets::chart::{make_history_chart, prepare_chart_data};
 use crate::widgets::status::render_status_paragraph;
 use crate::widgets::filters::make_filters_list;
+use crate::widgets::list::make_list;
 
 pub async fn draw_ui(
     mut data_rx: tokio::sync::mpsc::Receiver<Vec<Query>>,
     mut stats_rx: tokio::sync::mpsc::Receiver<StatsResponse>,
     mut status_rx: tokio::sync::mpsc::Receiver<StatusResponse>,
-    mut filters: AdGuardFilteringStatus,
+    filters: AdGuardFilteringStatus,
     shutdown: Arc<tokio::sync::Notify>
 ) -> Result<(), anyhow::Error> {
     enable_raw_mode()?;
@@ -66,6 +68,9 @@ pub async fn draw_ui(
             let graph = make_history_chart(&stats);
             let paragraph = render_status_paragraph(&status);
             let filters = make_filters_list(filters.filters.as_slice(), size.width);
+            let top_queried_domains = make_list("Top Queried Domains", &stats.top_queried_domains, Color::Green, size.width);
+            let top_blocked_domains = make_list("Top Blocked Domains", &stats.top_blocked_domains, Color::Red, size.width);
+            let top_clients = make_list("Top Clients", &stats.top_clients, Color::Cyan, size.width);
 
             let constraints = if size.height > 42 {
                 vec![
@@ -130,6 +135,9 @@ pub async fn draw_ui(
             f.render_widget(table, chunks[1]);
             if size.height > 42 {
                 f.render_widget(filters, bottom_chunks[0]);
+                f.render_widget(top_queried_domains, bottom_chunks[1]);
+                f.render_widget(top_blocked_domains, bottom_chunks[2]);
+                f.render_widget(top_clients, bottom_chunks[3]);
             }
         })?;
 
