@@ -1,12 +1,9 @@
 // filters.rs
 
 use tui::{
-  layout::Rect,
   text::{Span, Spans},
   widgets::{Block, Borders, List, ListItem},
   style::{Color, Style, Modifier},
-  backend::CrosstermBackend,
-  Frame,
 };
 
 use crate::fetch::fetch_filters::Filter;
@@ -30,7 +27,7 @@ pub fn make_filters_list(filters: &[Filter], width: u16) -> List {
         };
         let status = Span::styled(status_text, Style::default().fg(color));
         let rule_count = Span::styled(format!(" ({})", filter.rules_count), Style::default().fg(Color::Magenta).add_modifier(Modifier::BOLD));
-        let name = Span::raw(format!(" {}", truncate(&filter.name, width as usize / 4 - 14)));
+        let name = Span::raw(format!(" {}", truncate(&filter.name, width as usize / 4 - 12)));
         let content = Spans::from(vec![status, name, rule_count]);
         ListItem::new(content)
     })
