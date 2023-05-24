@@ -4,7 +4,7 @@ use reqwest::{Client, Error};
 use colored::*;
 
 fn print_info(text: &str, is_secondary: bool) {
-    let text = if is_secondary {
+    let _ = if is_secondary {
         println!("{}", text.green().italic().dimmed());
     } else {
         println!("{}", text.green());
