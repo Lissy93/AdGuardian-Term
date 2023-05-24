@@ -4,7 +4,7 @@ use reqwest::{Client, Error};
 use colored::*;
 
 fn print_info(text: &str, is_secondary: bool) {
-    let _ = if is_secondary {
+    if is_secondary {
         println!("{}", text.green().italic().dimmed());
     } else {
         println!("{}", text.green());
@@ -33,7 +33,7 @@ fn print_error(address: &str, error: Option<&Error>) {
         format!("Failed to connect to AdGuard at {}", address).red(),
         match error {
             Some(err) => format!("\n{}", err).red().dimmed(),
-            None => ColoredString::from("".red().dimmed()),
+            None => "".red().dimmed(),
         },
     );
     eprintln!("{}\n{}", "\nPlease check your environmental variables and try again.".yellow(), "Exiting...".blue());
