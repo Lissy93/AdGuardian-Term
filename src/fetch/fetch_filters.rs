@@ -4,10 +4,6 @@ use serde::Deserialize;
 #[derive(Deserialize)]
 pub struct AdGuardFilteringStatus {
     pub filters: Vec<Filter>,
-    whitelist_filters: Option<Vec<String>>,
-    user_rules: Vec<String>,
-    interval: u32,
-    enabled: bool,
 }
 
 #[derive(Deserialize)]
@@ -15,7 +11,6 @@ pub struct Filter {
     pub url: String,
     pub name: String,
     pub last_updated: String,
-    id: u32,
     pub rules_count: u32,
     pub enabled: bool,
 }
