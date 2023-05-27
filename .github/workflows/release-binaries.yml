@@ -21,6 +21,9 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::$(grep "^version" Cargo.toml | awk '{print $3}' | tr -d '"')
 
+      - name: Install dependencies
+        run: sudo apt-get update -y && sudo apt-get install -y musl-tools
+
       - name: Install rust toolchain
         uses: actions-rs/toolchain@v1
         with:
