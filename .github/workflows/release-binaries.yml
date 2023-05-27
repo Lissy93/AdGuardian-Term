@@ -37,12 +37,30 @@ jobs:
         with:
           command: install
           args: cross
-
-      - name: Build for Linux, MacOS and Windows
+          
+      - name: Build for Linux
         uses: actions-rs/cargo@v1
         with:
-          command: build
-          args: --release
+          command: cross
+          args: build --release --target=x86_64-unknown-linux-musl
+          
+      - name: Build for MacOS
+        uses: actions-rs/cargo@v1
+        with:
+          command: cross
+          args: build --release --target=x86_64-apple-darwin
+          
+      - name: Build for Windows
+        uses: actions-rs/cargo@v1
+        with:
+          command: cross
+          args: build --release --target=x86_64-pc-windows-gnu
+
+#       - name: Build for Linux, MacOS and Windows
+#         uses: actions-rs/cargo@v1
+#         with:
+#           command: build
+#           args: --release
 
       - name: Update or Create Release
         id: create_release
