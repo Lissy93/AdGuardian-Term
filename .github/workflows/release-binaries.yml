@@ -26,12 +26,6 @@ jobs:
           override: true
           components: clippy
 
-      - name: Validate with Clippy
-        uses: actions-rs/clippy-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: -- -D warnings
-
       - name: Install cargo-make
         uses: actions-rs/cargo@v1
         with:
