@@ -35,8 +35,8 @@ jobs:
       - name: Build for Linux, MacOS and Windows
         uses: actions-rs/cargo@v1
         with:
-          command: make
-          args: release-all
+          command: build
+          args: --release
 
       - name: Create Release
         id: create_release
