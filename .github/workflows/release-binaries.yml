@@ -1,0 +1,96 @@
+name: Release 🚀
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(grep "^version" Cargo.toml | awk '{print $3}' | tr -d '"')
+
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Install cargo-make
+        uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cargo-make
+
+      - name: Install cross
+        uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cross
+          
+      - name: Build for Linux
+        run: cross build --release --target=x86_64-unknown-linux-musl
+
+      - name: Build for MacOS
+        run: cross build --release --target=x86_64-apple-darwin
+
+      - name: Build for Windows
+        run: cross build --release --target=x86_64-pc-windows-gnu
+
+#       - name: Build for Linux, MacOS and Windows
+#         uses: actions-rs/cargo@v1
+#         with:
+#           command: build
+#           args: --release
+
+      - name: Update or Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
+          body_path: ./.github/CHANGELOG.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+
+      - name: Upload Linux Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/x86_64-unknown-linux-musl/release/adguardian
+          asset_name: adguardian-linux
+          asset_content_type: application/octet-stream
+
+      - name: Upload MacOS Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/x86_64-apple-darwin/release/adguardian
+          asset_name: adguardian-macos
+          asset_content_type: application/octet-stream
+
+      - name: Upload Windows Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/x86_64-pc-windows-gnu/release/adguardian.exe
+          asset_name: adguardian-windows.exe
+          asset_content_type: application/octet-stream
