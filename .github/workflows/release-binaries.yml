@@ -27,18 +27,15 @@ jobs:
           profile: minimal
           toolchain: stable
           override: true
-
-      - name: Install cross
-        uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: cross
-
+          
+      - name: Install target
+        run: rustup target add x86_64-unknown-linux-musl
+        
       - name: Build for Linux
         uses: actions-rs/cargo@v1
         with:
-          command: cross
-          args: build --release --target=x86_64-unknown-linux-musl
+          command: build
+          args: --release --target=x86_64-unknown-linux-musl
 
       - name: Upload Linux Binary
         uses: actions/upload-artifact@v2
