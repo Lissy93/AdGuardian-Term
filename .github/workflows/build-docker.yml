@@ -37,6 +37,10 @@ jobs:
           username: ${{ env.DOCKER_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      - name: Extract tag name
+        shell: bash
+        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
       - name: Build and push Docker images
         uses: docker/build-push-action@v2
         with:
@@ -45,6 +49,24 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           tags: |
-            ${{ env.GHCR_REGISTRY }}/${{ env.DOCKER_USER }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.DOCKERHUB_REGISTRY }}/${{ env.DOCKER_USER }}/${{ env.IMAGE_NAME }}:latest
+            ${{ 
+              github.ref == 'refs/heads/main' && 
+              env.GHCR_REGISTRY+'/'+
+              env.DOCKER_USER+'/'+
+              env.IMAGE_NAME+':latest' 
+              || 
+              env.GHCR_REGISTRY+'/'+
+              env.DOCKER_USER+'/'+
+              env.IMAGE_NAME+':'+env.GIT_TAG 
+            }}
+            ${{ 
+              github.ref == 'refs/heads/main' && 
+              env.DOCKERHUB_REGISTRY+'/'+
+              env.DOCKER_USER+'/'+
+              env.IMAGE_NAME+':latest' 
+              || 
+              env.DOCKERHUB_REGISTRY+'/'+
+              env.DOCKER_USER+'/'+
+              env.IMAGE_NAME+':'+env.GIT_TAG 
+            }}
 
