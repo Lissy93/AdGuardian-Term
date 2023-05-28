@@ -18,11 +18,29 @@ There are several options for running...
 
 ### Docker
 
+```bash
+docker run -it lissy93/adguardian
+```
+You may also pass in your AdGuard info with env vars (using `-e`), see the [Configuring](#configuring) section for an example, and list of availible config params.
+
+If you experience issues with DockerHub, or would rather use a different registry, the image is also available via GHCR - just replace the image name with: `ghcr.io/lissy93/adguardian`. Alternatively, if you'd like to build it yourself from source, you can do so with `docker buildx build -t  adguardian .` then run it with `docker run -it adguardian`.
+
 ### Executable
+
+Head to the [Releases](https://github.com/Lissy93/AdGuardian-Term/releases) tab, and download the executable for your system.
+Then, just run it by either double-clicking on it, or for Linux/Mac users, by running `./adguardian-linux` from the command line (don't forget to make it executable first with `chmod +x adguardian-linux`)
 
 ### Install from Crates.io
 
 ### Build from Source
+
+```bash
+git clone git@github.com:Lissy93/AdGuardian-Term.git && \
+cd AdGuardian-Term && \
+make
+```
+
+You'll need `git`, `cargo` and `make` (see [here](#development) for installation notes). You can also run the cargo commands defined in the Makefile directly, e.g. `cargo run`
 
 ### One-Liner
 
@@ -41,14 +59,49 @@ There are several options for running...
 
 ## Configuring
 
-The app requires the details of an AdGuard instance to connect to. This info can be provided either as environmental variables, or passed in as flag parameters. If any of these fields are missing or incomplete, you'll be prompted to enter a value once the app starts.
+The app requires the details of an AdGuard instance to connect to.
+This info can be provided either as environmental variables, or passed in as flag parameters.
+If any of these fields are missing or incomplete, you'll be prompted to enter a value once the app starts.
 
-The following params are required:
+The following params are accepted:
 
-- `ADGUARD_IP` - The IP address of your local AdGuard Home instance
-- `ADGUARD_PORT` - The port that AdGuard is running on
-- `ADGUARD_USERNAME` - An AdGuard Home username
-- `ADGUARD_PASSWORD` - An AdGuard Home password
+- `ADGUARD_IP` / `--adguard-ip` - The IP address of your local AdGuard Home instance
+- `ADGUARD_PORT` / `--adguard-port` - The port that AdGuard is running on
+- `ADGUARD_USERNAME` / `--adguard-username` - An AdGuard Home username
+- `ADGUARD_PASSWORD` / `--adguard-password` - An AdGuard Home password
+
+<details>
+<summary>Examples</summary>
+
+#### With Flags
+	
+```bash
+./adguardian -- \
+	--adguard-ip "192.168.180.1" \
+	--adguard-port "3000" \
+	--adguard-username "admin" \
+	--adguard-password "bobs-your-uncle"
+```
+	
+#### With Env Vars
+	
+```bash
+ADGUARD_IP="192.168.180.1" ADGUARD_PORT="3000" ADGUARD_USERNAME="admin" ADGUARD_PASSWORD="bobs-your-uncle" ./adguardian
+```
+	
+#### In Docker
+	
+```bash
+docker run \
+	-e "ADGUARD_IP=192.168.180.1" \
+	-e "ADGUARD_PORT=3000" \
+	-e "ADGUARD_USERNAME=admin" \
+	-e "ADGUARD_PASSWORD=bobs-your-uncle" \
+	-it lissy93/adguardian
+```
+	
+</details>
+
 
 ---
 
@@ -65,6 +118,8 @@ The terminal dashboard can also be viewed via a browser, thanks to [ttyd](https:
 You'll need Rust installed. Run: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh` - see the [installation docs](https://forge.rust-lang.org/infra/other-installation-methods.html). You'll also need [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), if you don't already have it.
 
 Then clone the repo, and cd into it, with: `git clone git@github.com:Lissy93/AdGuardian-Term.git` && `cd AdGuardian-Term`
+
+You can view the full list of availible project commands in the [Makefile](https://github.com/Lissy93/AdGuardian-Term/blob/main/Makefile)
 
 ### Run
 

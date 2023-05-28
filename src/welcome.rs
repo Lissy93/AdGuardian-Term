@@ -89,6 +89,28 @@ pub async fn welcome() -> Result<(), Box<dyn std::error::Error>> {
 
     let client = Client::new();
 
+    // List of available flags, ant their associated env vars
+    let flags = [
+        ("--adguard-ip", "ADGUARD_IP"),
+        ("--adguard-port", "ADGUARD_PORT"),
+        ("--adguard-username", "ADGUARD_USERNAME"),
+        ("--adguard-password", "ADGUARD_PASSWORD"),
+    ];
+
+    // Parse command line arguments
+    let mut args = std::env::args().peekable();
+    while let Some(arg) = args.next() {
+        for &(flag, var) in &flags {
+            if arg == flag {
+                if let Some(value) = args.peek() {
+                    env::set_var(var, value);
+                    args.next();
+                }
+            }
+        }
+    }
+
+    // If any of the env variables or flags are not yet set, prompt the user to enter them
     for &key in &["ADGUARD_IP", "ADGUARD_PORT", "ADGUARD_USERNAME", "ADGUARD_PASSWORD"] {
         if env::var(key).is_err() {
             println!(
