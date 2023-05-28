@@ -111,6 +111,28 @@
 <a href="#111" id="111">111</a>
 <a href="#112" id="112">112</a>
 <a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
 </pre><pre class="rust"><code><span class="kw">use </span>std::io::{<span class="self">self</span>, Write};
 <span class="kw">use </span>std::env;
 <span class="kw">use </span>reqwest::{Client, Error};
@@ -202,7 +224,29 @@
 
     <span class="kw">let </span>client = Client::new();
 
-    <span class="kw">for </span><span class="kw-2">&amp;</span>key <span class="kw">in </span><span class="kw-2">&amp;</span>[<span class="string">&quot;ADGUARD_IP&quot;</span>, <span class="string">&quot;ADGUARD_PORT&quot;</span>, <span class="string">&quot;ADGUARD_USERNAME&quot;</span>, <span class="string">&quot;ADGUARD_PASSWORD&quot;</span>] {
+    <span class="comment">// List of available flags, ant their associated env vars
+    </span><span class="kw">let </span>flags = [
+        (<span class="string">&quot;--adguard-ip&quot;</span>, <span class="string">&quot;ADGUARD_IP&quot;</span>),
+        (<span class="string">&quot;--adguard-port&quot;</span>, <span class="string">&quot;ADGUARD_PORT&quot;</span>),
+        (<span class="string">&quot;--adguard-username&quot;</span>, <span class="string">&quot;ADGUARD_USERNAME&quot;</span>),
+        (<span class="string">&quot;--adguard-password&quot;</span>, <span class="string">&quot;ADGUARD_PASSWORD&quot;</span>),
+    ];
+
+    <span class="comment">// Parse command line arguments
+    </span><span class="kw">let </span><span class="kw-2">mut </span>args = std::env::args().peekable();
+    <span class="kw">while let </span><span class="prelude-val">Some</span>(arg) = args.next() {
+        <span class="kw">for </span><span class="kw-2">&amp;</span>(flag, var) <span class="kw">in </span><span class="kw-2">&amp;</span>flags {
+            <span class="kw">if </span>arg == flag {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = args.peek() {
+                    env::set_var(var, value);
+                    args.next();
+                }
+            }
+        }
+    }
+
+    <span class="comment">// If any of the env variables or flags are not yet set, prompt the user to enter them
+    </span><span class="kw">for </span><span class="kw-2">&amp;</span>key <span class="kw">in </span><span class="kw-2">&amp;</span>[<span class="string">&quot;ADGUARD_IP&quot;</span>, <span class="string">&quot;ADGUARD_PORT&quot;</span>, <span class="string">&quot;ADGUARD_USERNAME&quot;</span>, <span class="string">&quot;ADGUARD_PASSWORD&quot;</span>] {
         <span class="kw">if </span>env::var(key).is_err() {
             <span class="macro">println!</span>(
                 <span class="string">&quot;{}&quot;</span>,
