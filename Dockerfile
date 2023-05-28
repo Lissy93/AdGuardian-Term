@@ -1,24 +1,13 @@
 # syntax=docker/dockerfile:1.2
 
+# Build application - Copy assets, install deps and compile binary
 FROM --platform=$BUILDPLATFORM rust:1.69.0-alpine AS builder
-
-# Adding necessary packages
-RUN apk update
-RUN apk add pkgconfig openssl openssl-dev musl-dev
-
-# Set working directory in container; make directory if not exists
-RUN mkdir -p /usr/src/adguardian
+RUN apk add --no-cache pkgconfig openssl openssl-dev musl-dev
 WORKDIR /usr/src/adguardian
-
-# Copy all files from local computer to container
-COPY Cargo.toml .
-COPY Cargo.lock .
-COPY src src
-
-# Build release application
+COPY . .
 RUN cargo build --release
 
-
+# Run application - Using lightweight base, execute the binary
 FROM scratch
 COPY --from=builder /usr/src/adguardian/target/release/adguardian /
 ENTRYPOINT ["/adguardian"]
