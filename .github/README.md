@@ -24,8 +24,14 @@ docker run -it lissy93/adguardian
 
 ### Executable
 
-Head to the [Releases](https://github.com/Lissy93/AdGuardian-Term/releases) tab, and download the executable for your system.
-Then, just run it by either double-clicking on it, or for Linux/Mac users, by running `./adguardian-linux` from the command line (don't forget to make it executable first with `chmod +x adguardian-linux`)
+```bash
+curl -o adguardian https://github.com/Lissy93/AdGuardian-Term/releases/download/1.0.0/adguardian-linux && \
+chmod +x adguardian && \
+./adguardian
+```
+
+> In the above example, don't forget to update the URL to download the latest stable version for your operating system<br>
+> You may also just head over the the [Releases](https://github.com/Lissy93/AdGuardian-Term/releases) tab, download the latest executable, and double-click on it to run
 
 ### Install from Crates.io
 
@@ -153,7 +159,13 @@ You can execute this directly, e.g. by running `./target/release/adguardian` (ad
 
 ### Contributors
 
+<!-- readme: contributors -start -->
+<!-- readme: contributors -end -->
+
 ### Sponsors
+
+<!-- readme: sponsors -start -->
+<!-- readme: sponsors -end -->
 
 ### Dependencies
 
