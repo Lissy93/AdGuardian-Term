@@ -8,7 +8,7 @@ on:
 
 env:
   IMAGE_NAME: adguardian
-  DOCKER_USER: ${{ github.repository_owner }}
+  DOCKER_USER: lissy93
   REGISTRY: ghcr.io
 
 jobs:
