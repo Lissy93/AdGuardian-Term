@@ -1,3 +1,7 @@
+/// This module fetches data from AdGuard's stats API
+/// This includes total number of blocked / allowed queries in each category,
+/// and 30-day query count history
+
 use reqwest::{
   header::{HeaderValue, CONTENT_LENGTH, AUTHORIZATION},
 };
@@ -58,7 +62,7 @@ pub async fn fetch_adguard_stats(
     Ok(data)
 }
 
-
+/// Deserialize a list of domains from the JSON data
 fn deserialize_domains<'de, D>(deserializer: D) -> Result<Vec<DomainData>, D::Error>
 where
     D: serde::Deserializer<'de>,
