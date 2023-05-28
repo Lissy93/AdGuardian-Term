@@ -1,0 +1,4 @@
+target/
+.github/
+.git/
+Dockerfile
