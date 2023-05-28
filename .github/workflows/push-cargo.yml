@@ -2,9 +2,8 @@ name: Publish to Crates.io 📦
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 
 jobs:
   publish:
