@@ -11,6 +11,7 @@ env:
   DOCKER_USER: lissy93
   GHCR_REGISTRY: ghcr.io
   DOCKERHUB_REGISTRY: docker.io
+  GIT_TAG: ${{ github.ref == 'refs/tags/*' && github.ref || 'latest' }}
 
 jobs:
   docker:
@@ -49,24 +50,5 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           tags: |
-            ${{ 
-              github.ref == 'refs/heads/main' && 
-              env.GHCR_REGISTRY+'/'+
-              env.DOCKER_USER+'/'+
-              env.IMAGE_NAME+':latest' 
-              || 
-              env.GHCR_REGISTRY+'/'+
-              env.DOCKER_USER+'/'+
-              env.IMAGE_NAME+':'+env.GIT_TAG 
-            }}
-            ${{ 
-              github.ref == 'refs/heads/main' && 
-              env.DOCKERHUB_REGISTRY+'/'+
-              env.DOCKER_USER+'/'+
-              env.IMAGE_NAME+':latest' 
-              || 
-              env.DOCKERHUB_REGISTRY+'/'+
-              env.DOCKER_USER+'/'+
-              env.IMAGE_NAME+':'+env.GIT_TAG 
-            }}
-
+            ${{ env.GHCR_TAG }}
+            ${{ env.DOCKERHUB_TAG }}
