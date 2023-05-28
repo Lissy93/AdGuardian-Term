@@ -133,8 +133,19 @@
 <a href="#133" id="133">133</a>
 <a href="#134" id="134">134</a>
 <a href="#135" id="135">135</a>
-</pre><pre class="rust"><code><span class="kw">use </span>std::io::{<span class="self">self</span>, Write};
-<span class="kw">use </span>std::env;
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+</pre><pre class="rust"><code><span class="kw">use </span>std::{
+    io:: {<span class="self">self</span>, Write},
+    env,
+    time::Duration
+};
 <span class="kw">use </span>reqwest::{Client, Error};
 <span class="kw">use </span>colored::<span class="kw-2">*</span>;
 
@@ -206,7 +217,12 @@
 
     <span class="kw">let </span>url = <span class="macro">format!</span>(<span class="string">&quot;http://{}:{}/control/status&quot;</span>, ip, port);
 
-    <span class="kw">match </span>client.get(<span class="kw-2">&amp;</span>url).headers(headers).send().<span class="kw">await </span>{
+    <span class="kw">match </span>client
+        .get(<span class="kw-2">&amp;</span>url)
+        .headers(headers)
+        .timeout(Duration::from_secs(<span class="number">2</span>))
+        .send()
+        .<span class="kw">await </span>{
         <span class="prelude-val">Ok</span>(res) <span class="kw">if </span>res.status().is_success() =&gt; {
             <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="string">&quot;AdGuard connection successful!\n&quot;</span>.green());
             <span class="prelude-val">Ok</span>(())

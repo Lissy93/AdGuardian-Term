@@ -72,7 +72,15 @@
 <a href="#72" id="72">72</a>
 <a href="#73" id="73">73</a>
 <a href="#74" id="74">74</a>
-</pre><pre class="rust"><code><span class="kw">use </span>reqwest::{
+<a href="#75" id="75">75</a>
+<a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
+<a href="#78" id="78">78</a>
+</pre><pre class="rust"><code><span class="doccomment">/// This module fetches data from AdGuard&#39;s stats API
+/// This includes total number of blocked / allowed queries in each category,
+/// and 30-day query count history
+
+</span><span class="kw">use </span>reqwest::{
   header::{HeaderValue, CONTENT_LENGTH, AUTHORIZATION},
 };
 <span class="kw">use </span>serde::Deserialize;
@@ -132,8 +140,8 @@
     <span class="prelude-val">Ok</span>(data)
 }
 
-
-<span class="kw">fn </span>deserialize_domains&lt;<span class="lifetime">&#39;de</span>, D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;DomainData&gt;, D::Error&gt;
+<span class="doccomment">/// Deserialize a list of domains from the JSON data
+</span><span class="kw">fn </span>deserialize_domains&lt;<span class="lifetime">&#39;de</span>, D&gt;(deserializer: D) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;DomainData&gt;, D::Error&gt;
 <span class="kw">where
     </span>D: serde::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
 {
