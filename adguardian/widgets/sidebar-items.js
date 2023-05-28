@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["chart","filters","gauge","list","status","table"]};

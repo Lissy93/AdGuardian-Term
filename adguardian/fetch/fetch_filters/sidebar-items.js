@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["fetch_adguard_filter_list"],"struct":["AdGuardFilteringStatus","Filter"]};

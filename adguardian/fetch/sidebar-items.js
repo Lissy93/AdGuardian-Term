@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["fetch_filters","fetch_query_log","fetch_stats","fetch_status"]};

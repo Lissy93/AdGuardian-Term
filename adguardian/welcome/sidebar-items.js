@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["get_env","print_ascii_art","print_error","print_info","verify_connection","welcome"]};

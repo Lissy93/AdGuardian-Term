@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["convert_to_chart_data","find_bounds","generate_x_labels","generate_y_labels","interpolate","make_history_chart","make_history_datasets","prepare_chart_data"]};

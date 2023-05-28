@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["deserialize_domains","fetch_adguard_stats"],"struct":["DomainData","StatsResponse"]};

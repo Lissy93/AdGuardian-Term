@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["fetch_adguard_status"],"struct":["StatusResponse"]};
