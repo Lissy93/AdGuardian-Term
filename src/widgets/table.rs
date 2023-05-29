@@ -14,7 +14,7 @@ pub fn make_query_table(data: &[Query]) -> Table<'_> {
       let time = Cell::from(
           time_ago(query.time.as_str()).unwrap_or("unknown".to_string())
       ).style(Style::default().fg(Color::Gray));
-
+      
       let question = Cell::from(make_request_cell(&query.question).unwrap())
           .style(Style::default().add_modifier(Modifier::BOLD));
 
@@ -27,8 +27,10 @@ pub fn make_query_table(data: &[Query]) -> Table<'_> {
       let (status_txt, status_color) = block_status_text(&query.reason, query.cached);
       let status = Cell::from(status_txt).style(Style::default().fg(status_color));
 
+      let upstream = Cell::from(query.upstream.as_str()).style(Style::default().fg(Color::Blue));
+
       let color = make_row_color(&query.reason);
-      Row::new(vec![time, question, status, client, elapsed_ms])
+      Row::new(vec![time, question, status, client, upstream, elapsed_ms])
           .style(Style::default().fg(color))
   }).collect::<Vec<Row>>(); // Clone the data here
 
@@ -38,6 +40,7 @@ pub fn make_query_table(data: &[Query]) -> Table<'_> {
         Cell::from(Span::raw("Request")),
         Cell::from(Span::raw("Status")),
         Cell::from(Span::raw("Client")),
+        Cell::from(Span::raw("Upstream DNS")),
         Cell::from(Span::raw("Time Taken")),
       ]))
       .block(
@@ -50,9 +53,10 @@ pub fn make_query_table(data: &[Query]) -> Table<'_> {
       .widths(&[
         Constraint::Percentage(15),
         Constraint::Percentage(35),
+        Constraint::Percentage(10),
         Constraint::Percentage(15),
-        Constraint::Percentage(20),
         Constraint::Percentage(15),
+        Constraint::Percentage(10),
       ]);
 
   table
