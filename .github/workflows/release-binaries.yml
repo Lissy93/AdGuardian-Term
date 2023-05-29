@@ -13,8 +13,8 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  release-linux:
-    name: Release Linux
+  release-x86_64:
+    name: Release x86_64
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -37,17 +37,81 @@ jobs:
       - name: Install target
         run: rustup target add x86_64-unknown-linux-musl
         
-      - name: Build for Linux
+      - name: Build for x86_64
         uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --target=x86_64-unknown-linux-musl
 
-      - name: Upload Linux Binary
+      - name: Upload x86_64 Binary
         uses: actions/upload-artifact@v2
         with:
           name: adguardian-linux
           path: ./target/x86_64-unknown-linux-musl/release/adguardian
+
+  release-arm-v7:
+    name: Release ARM V7
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(grep "^version" Cargo.toml | awk '{print $3}' | tr -d '"')
+
+      - name: Install dependencies
+        run: sudo apt-get update -y && sudo apt-get install -y gcc-arm-linux-gnueabihf
+
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          target: armv7-unknown-linux-gnueabihf
+          
+      - name: Install cargo-cross
+        uses: actions-rs/cargo@v1
+        with:
+          command: install
+          args: cross
+
+      - name: Build for ARM V7
+        uses: actions-rs/cargo@v1
+        with:
+          command: cross
+          args: build --release --target=armv7-unknown-linux-gnueabihf
+
+      - name: Upload ARM V7 Binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: adguardian-arm-v7
+          path: ./target/armv7-unknown-linux-gnueabihf/release/adguardian
+
+  release-arm64:
+    name: Release ARM64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(grep "^version" Cargo.toml | awk '{print $3}' | tr -d '"')
+
+      - name: Install Docker
+        run: sudo apt-get update -y && sudo apt-get install -y docker.io
+
+      - name: Build for ARM64
+        run: |
+          docker run --rm -v $PWD:/volume -w /volume rustembedded/cross:aarch64-unknown-linux-gnu cargo build --release
+
+      - name: Upload ARM64 Binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: adguardian-arm64
+          path: ./target/aarch64-unknown-linux-gnu/release/adguardian
 
   release-macos:
     name: Release MacOS
@@ -111,7 +175,7 @@ jobs:
 
   create-release:
     name: Create Release
-    needs: [release-linux, release-macos, release-windows]
+    needs: [release-x86_64, release-arm-v7, release-arm64, release-macos, release-windows]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -133,11 +197,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
 
-      - name: Download Linux Binary
+      - name: Download x86_64 Binary
         uses: actions/download-artifact@v2
         with:
-          name: adguardian-linux
+          name: adguardian-x86_64
           path: ./target/x86_64-unknown-linux-musl/release/
+
+      - name: Download ARM V7 Binary
+        uses: actions/download-artifact@v2
+        with:
+          name: adguardian-arm-v7
+          path: ./target/armv7-unknown-linux-gnueabihf/release/
+
+      - name: Download ARM64 Binary
+        uses: actions/download-artifact@v2
+        with:
+          name: adguardian-arm64
+          path: ./target/aarch64-unknown-linux-gnu/release/
 
       - name: Download MacOS Binary
         uses: actions/download-artifact@v2
@@ -151,16 +227,36 @@ jobs:
           name: adguardian-windows
           path: ./target/release/
 
-      - name: Upload Linux Binary
+      - name: Upload x86_64 Binary
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./target/x86_64-unknown-linux-musl/release/adguardian
-          asset_name: adguardian-linux
+          asset_name: adguardian-x86_64
           asset_content_type: application/octet-stream
 
+      - name: Upload ARM V7 Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/armv7-unknown-linux-gnueabihf/release/adguardian
+          asset_name: adguardian-arm-v7
+          asset_content_type: application/octet-stream
+      
+      - name: Upload ARM64 Binary
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./target/aarch64-unknown-linux-gnu/release/adguardian
+          asset_name: adguardian-arm64
+          asset_content_type: application/octet-stream
+      
       - name: Upload MacOS Binary
         uses: actions/upload-release-asset@v1
         env:
