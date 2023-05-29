@@ -64,7 +64,7 @@ pub async fn draw_ui(
 
             // Make the charts
             let gauge = make_gauge(&stats);
-            let table = make_query_table(&data);
+            let table = make_query_table(&data, size.width);
             let graph = make_history_chart(&stats);
             let paragraph = render_status_paragraph(&status, &stats);
             let filters = make_filters_list(filters.filters.as_slice(), size.width);

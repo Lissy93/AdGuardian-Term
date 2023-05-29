@@ -8,8 +8,7 @@ use tui::{
 use chrono::{DateTime, Utc};
 
 use crate::fetch::fetch_query_log::{Query, Question};
-
-pub fn make_query_table(data: &[Query]) -> Table<'_> {
+pub fn make_query_table(data: &[Query], width: u16) -> Table<'_> {
   let rows = data.iter().map(|query| {
       let time = Cell::from(
           time_ago(query.time.as_str()).unwrap_or("unknown".to_string())
@@ -30,36 +29,59 @@ pub fn make_query_table(data: &[Query]) -> Table<'_> {
       let upstream = Cell::from(query.upstream.as_str()).style(Style::default().fg(Color::Blue));
 
       let color = make_row_color(&query.reason);
-      Row::new(vec![time, question, status, client, upstream, elapsed_ms])
+      Row::new(vec![time, question, status, elapsed_ms, client, upstream])
           .style(Style::default().fg(color))
-  }).collect::<Vec<Row>>(); // Clone the data here
+  }).collect::<Vec<Row>>();
 
-  let table = Table::new(rows) // Table now owns its data
-      .header(Row::new(vec![
-        Cell::from(Span::raw("Time")),
-        Cell::from(Span::raw("Request")),
-        Cell::from(Span::raw("Status")),
-        Cell::from(Span::raw("Client")),
-        Cell::from(Span::raw("Upstream DNS")),
-        Cell::from(Span::raw("Time Taken")),
-      ]))
-      .block(
-        Block::default()
-          .title(Span::styled(
-            "Query Log",
-            Style::default().add_modifier(Modifier::BOLD),
-          ))
-          .borders(Borders::ALL))
-      .widths(&[
-        Constraint::Percentage(15),
-        Constraint::Percentage(35),
-        Constraint::Percentage(10),
-        Constraint::Percentage(15),
-        Constraint::Percentage(15),
-        Constraint::Percentage(10),
+  
+  let title = Span::styled(
+    "Query Log",
+    Style::default().add_modifier(Modifier::BOLD),
+  );
+
+  let block = Block::default()
+      .title(title)
+      .borders(Borders::ALL);
+
+  let mut headers = vec![
+      Cell::from(Span::raw("Time")),
+      Cell::from(Span::raw("Request")),
+      Cell::from(Span::raw("Status")),
+      Cell::from(Span::raw("Time Taken")),
+  ];
+
+  if width > 120 {
+      headers.extend(vec![
+          Cell::from(Span::raw("Client")),
+          Cell::from(Span::raw("Upstream DNS")),
       ]);
+      
+      let widths = &[
+          Constraint::Percentage(15),
+          Constraint::Percentage(35),
+          Constraint::Percentage(10),
+          Constraint::Percentage(10),
+          Constraint::Percentage(15),
+          Constraint::Percentage(15),
+      ];
 
-  table
+      Table::new(rows)
+          .header(Row::new(headers))
+          .widths(widths)
+          .block(block)
+  } else {
+      let widths = &[
+          Constraint::Percentage(20),
+          Constraint::Percentage(40),
+          Constraint::Percentage(20),
+          Constraint::Percentage(20),
+      ];
+
+      Table::new(rows)
+          .header(Row::new(headers))
+          .widths(widths)
+          .block(block)
+  }
 }
 
 // Given a timestamp, return a string representing how long ago that was
