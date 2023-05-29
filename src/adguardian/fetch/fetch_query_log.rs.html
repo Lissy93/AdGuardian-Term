@@ -49,6 +49,7 @@
 <a href="#49" id="49">49</a>
 <a href="#50" id="50">50</a>
 <a href="#51" id="51">51</a>
+<a href="#52" id="52">52</a>
 </pre><pre class="rust"><code><span class="kw">use </span>reqwest::{
   header::{HeaderValue, CONTENT_LENGTH, AUTHORIZATION},
 };
@@ -63,6 +64,7 @@
 </span><span class="kw">pub struct </span>Query {
     <span class="kw">pub </span>cached: bool,
     <span class="kw">pub </span>client: String,
+    <span class="kw">pub </span>upstream: String,
     <span class="attr">#[serde(rename = <span class="string">&quot;elapsedMs&quot;</span>)]
     </span><span class="kw">pub </span>elapsed_ms: String,
     <span class="kw">pub </span>question: Question,

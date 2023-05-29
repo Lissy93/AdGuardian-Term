@@ -249,7 +249,7 @@
 
             <span class="comment">// Make the charts
             </span><span class="kw">let </span>gauge = make_gauge(<span class="kw-2">&amp;</span>stats);
-            <span class="kw">let </span>table = make_query_table(<span class="kw-2">&amp;</span>data);
+            <span class="kw">let </span>table = make_query_table(<span class="kw-2">&amp;</span>data, size.width);
             <span class="kw">let </span>graph = make_history_chart(<span class="kw-2">&amp;</span>stats);
             <span class="kw">let </span>paragraph = render_status_paragraph(<span class="kw-2">&amp;</span>status, <span class="kw-2">&amp;</span>stats);
             <span class="kw">let </span>filters = make_filters_list(filters.filters.as_slice(), size.width);

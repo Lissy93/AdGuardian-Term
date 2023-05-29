@@ -119,6 +119,32 @@
 <a href="#119" id="119">119</a>
 <a href="#120" id="120">120</a>
 <a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
 </pre><pre class="rust"><code>
 <span class="kw">use </span>tui::{
   style::{Color, Modifier, Style},
@@ -129,13 +155,12 @@
 <span class="kw">use </span>chrono::{DateTime, Utc};
 
 <span class="kw">use </span><span class="kw">crate</span>::fetch::fetch_query_log::{Query, Question};
-
-<span class="kw">pub fn </span>make_query_table(data: <span class="kw-2">&amp;</span>[Query]) -&gt; Table&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">pub fn </span>make_query_table(data: <span class="kw-2">&amp;</span>[Query], width: u16) -&gt; Table&lt;<span class="lifetime">&#39;_</span>&gt; {
   <span class="kw">let </span>rows = data.iter().map(|query| {
       <span class="kw">let </span>time = Cell::from(
           time_ago(query.time.as_str()).unwrap_or(<span class="string">&quot;unknown&quot;</span>.to_string())
       ).style(Style::default().fg(Color::Gray));
-
+      
       <span class="kw">let </span>question = Cell::from(make_request_cell(<span class="kw-2">&amp;</span>query.question).unwrap())
           .style(Style::default().add_modifier(Modifier::BOLD));
 
@@ -148,35 +173,62 @@
       <span class="kw">let </span>(status_txt, status_color) = block_status_text(<span class="kw-2">&amp;</span>query.reason, query.cached);
       <span class="kw">let </span>status = Cell::from(status_txt).style(Style::default().fg(status_color));
 
+      <span class="kw">let </span>upstream = Cell::from(query.upstream.as_str()).style(Style::default().fg(Color::Blue));
+
       <span class="kw">let </span>color = make_row_color(<span class="kw-2">&amp;</span>query.reason);
-      Row::new(<span class="macro">vec!</span>[time, question, status, client, elapsed_ms])
+      Row::new(<span class="macro">vec!</span>[time, question, status, elapsed_ms, client, upstream])
           .style(Style::default().fg(color))
-  }).collect::&lt;Vec&lt;Row&gt;&gt;(); <span class="comment">// Clone the data here
+  }).collect::&lt;Vec&lt;Row&gt;&gt;();
 
-  </span><span class="kw">let </span>table = Table::new(rows) <span class="comment">// Table now owns its data
-      </span>.header(Row::new(<span class="macro">vec!</span>[
-        Cell::from(Span::raw(<span class="string">&quot;Time&quot;</span>)),
-        Cell::from(Span::raw(<span class="string">&quot;Request&quot;</span>)),
-        Cell::from(Span::raw(<span class="string">&quot;Status&quot;</span>)),
-        Cell::from(Span::raw(<span class="string">&quot;Client&quot;</span>)),
-        Cell::from(Span::raw(<span class="string">&quot;Time Taken&quot;</span>)),
-      ]))
-      .block(
-        Block::default()
-          .title(Span::styled(
-            <span class="string">&quot;Query Log&quot;</span>,
-            Style::default().add_modifier(Modifier::BOLD),
-          ))
-          .borders(Borders::ALL))
-      .widths(<span class="kw-2">&amp;</span>[
-        Constraint::Percentage(<span class="number">15</span>),
-        Constraint::Percentage(<span class="number">35</span>),
-        Constraint::Percentage(<span class="number">15</span>),
-        Constraint::Percentage(<span class="number">20</span>),
-        Constraint::Percentage(<span class="number">15</span>),
+  
+  <span class="kw">let </span>title = Span::styled(
+    <span class="string">&quot;Query Log&quot;</span>,
+    Style::default().add_modifier(Modifier::BOLD),
+  );
+
+  <span class="kw">let </span>block = Block::default()
+      .title(title)
+      .borders(Borders::ALL);
+
+  <span class="kw">let </span><span class="kw-2">mut </span>headers = <span class="macro">vec!</span>[
+      Cell::from(Span::raw(<span class="string">&quot;Time&quot;</span>)),
+      Cell::from(Span::raw(<span class="string">&quot;Request&quot;</span>)),
+      Cell::from(Span::raw(<span class="string">&quot;Status&quot;</span>)),
+      Cell::from(Span::raw(<span class="string">&quot;Time Taken&quot;</span>)),
+  ];
+
+  <span class="kw">if </span>width &gt; <span class="number">120 </span>{
+      headers.extend(<span class="macro">vec!</span>[
+          Cell::from(Span::raw(<span class="string">&quot;Client&quot;</span>)),
+          Cell::from(Span::raw(<span class="string">&quot;Upstream DNS&quot;</span>)),
       ]);
+      
+      <span class="kw">let </span>widths = <span class="kw-2">&amp;</span>[
+          Constraint::Percentage(<span class="number">15</span>),
+          Constraint::Percentage(<span class="number">35</span>),
+          Constraint::Percentage(<span class="number">10</span>),
+          Constraint::Percentage(<span class="number">10</span>),
+          Constraint::Percentage(<span class="number">15</span>),
+          Constraint::Percentage(<span class="number">15</span>),
+      ];
 
-  table
+      Table::new(rows)
+          .header(Row::new(headers))
+          .widths(widths)
+          .block(block)
+  } <span class="kw">else </span>{
+      <span class="kw">let </span>widths = <span class="kw-2">&amp;</span>[
+          Constraint::Percentage(<span class="number">20</span>),
+          Constraint::Percentage(<span class="number">40</span>),
+          Constraint::Percentage(<span class="number">20</span>),
+          Constraint::Percentage(<span class="number">20</span>),
+      ];
+
+      Table::new(rows)
+          .header(Row::new(headers))
+          .widths(widths)
+          .block(block)
+  }
 }
 
 <span class="comment">// Given a timestamp, return a string representing how long ago that was
