@@ -73,13 +73,10 @@ jobs:
           
       - name: Install cross
         run: cargo install cross
-  
+        
       - name: Build for ARM V7
-        uses: actions-rs/cargo@v1
-        with:
-          command: cross
-          args: build --release --target=armv7-unknown-linux-gnueabihf
-
+        run: cross build --target=armv7-unknown-linux-gnueabihf --release
+        
       - name: Upload ARM V7 Binary
         uses: actions/upload-artifact@v2
         with:
