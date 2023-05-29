@@ -71,12 +71,9 @@ jobs:
           override: true
           target: armv7-unknown-linux-gnueabihf
           
-      - name: Install cargo-cross
-        uses: actions-rs/cargo@v1
-        with:
-          command: install
-          args: cross
-
+      - name: Install cross
+        run: cargo install cross
+  
       - name: Build for ARM V7
         uses: actions-rs/cargo@v1
         with:
@@ -100,18 +97,21 @@ jobs:
         id: get_version
         run: echo ::set-output name=VERSION::$(grep "^version" Cargo.toml | awk '{print $3}' | tr -d '"')
 
-      - name: Install Docker
-        run: sudo apt-get update -y && sudo apt-get install -y docker.io
+      - name: Install cross
+        run: cargo install cross
+
+      - name: Install aarch64 target
+        run: rustup target add aarch64-unknown-linux-gnu
 
       - name: Build for ARM64
-        run: |
-          docker run --rm -v $PWD:/volume -w /volume rustembedded/cross:aarch64-unknown-linux-gnu cargo build --release
+        run: cross build --target aarch64-unknown-linux-gnu --release
 
       - name: Upload ARM64 Binary
         uses: actions/upload-artifact@v2
         with:
           name: adguardian-arm64
           path: ./target/aarch64-unknown-linux-gnu/release/adguardian
+
 
   release-macos:
     name: Release MacOS
