@@ -46,7 +46,7 @@ jobs:
       - name: Upload x86_64 Binary
         uses: actions/upload-artifact@v2
         with:
-          name: adguardian-linux
+          name: adguardian-x86_64
           path: ./target/x86_64-unknown-linux-musl/release/adguardian
 
   release-arm-v7:
