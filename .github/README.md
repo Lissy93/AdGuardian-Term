@@ -10,7 +10,9 @@
 
 AdGuardian Terminal Eddition - Keep an eye on your traffic, with this (unofficial) buddy for your AdGuard Home instance
 
-<!-- put screenshot here, yeah -->
+<p align="center">
+<img width="600" src="https://i.ibb.co/Nrtd01d/adguardian-demo.gif?" >
+</p>
 
 Features:
 - **Real-time Query Monitoring**: _Fetches and displays all DNS queries in real time, letting you see exactly what's happening on your network at any given moment_
@@ -100,7 +102,7 @@ make
 ### One-Liner
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/Lissy93/AdGuardian-Term/main/quick-start.sh)
+bash <(curl -sL https://raw.githubusercontent.com/Lissy93/AdGuardian-Term/main/quick-start.sh)
 ```
 
 > This will run the [quick-start.sh](https://github.com/Lissy93/AdGuardian-Term/blob/main/quick-start.sh) Bash script, which downloads and executes the latest binary for your system type. Be sure to read and understand the file first
