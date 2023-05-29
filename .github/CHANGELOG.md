@@ -1,1 +1,3 @@
-Adds support for command line flags, as well as / instead of environmental variables (fixes #1)
+- Improved deployment: 12Mb Docker image, 1-line install script, and publish to crates.io
+- Adds documentation
+- Faster start-up time
