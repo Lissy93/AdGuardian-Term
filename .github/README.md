@@ -221,6 +221,28 @@ Once your finished developing, you can build the project for production with: `c
 The binaries for your system will then be available in the `./target/release/` directory of the project.
 You can execute this directly, e.g. by running `./target/release/adguardian` (add .exe if on Windows)
 
+### CI / CD
+
+The testing, building, and publishing of the app is done with GitHub Actions.
+
+<details>
+<summary>View Current Workflow Status</summary>
+
+- Build Docker image and push to registry
+  - [![Build Docker Image 🐳](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/build-docker.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/build-docker.yml)
+- Compile binaries and upload artifacts to release
+  - [![Compile Release 🚀](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/release-binaries.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/release-binaries.yml)
+- Publish compiled app to crates.io
+  - [![Publish to Crates.io 📦](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/push-cargo.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/push-cargo.yml)
+- Generate documentation from Rustdoc, upload to GH pages
+  - [![Generate Rust Docs 📝](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/publish-docs.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/publish-docs.yml)
+- Sync repo with downstream codeberg mirror
+  - [![Mirror to Codeberg 🪞](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/mirror.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/mirror.yml)
+- Insert list of contributors + sponsors into readme
+  - [![Insert Contributors 👥](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/insert-contributors.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/insert-contributors.yml)
+
+</details>
+
 ---
 
 ## Credits
