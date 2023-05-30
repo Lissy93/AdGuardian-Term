@@ -94,6 +94,9 @@
 <a href="#94" id="94">94</a>
 <a href="#95" id="95">95</a>
 <a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
 </pre><pre class="rust"><code><span class="kw">mod </span>fetch;
 <span class="kw">mod </span>ui;
 <span class="kw">mod </span>widgets;
@@ -185,8 +188,11 @@
 
         run().<span class="kw">await</span>.map_err(|e| {
             <span class="macro">eprintln!</span>(<span class="string">&quot;Failed to run: {}&quot;</span>, e);
-            std::io::Error::new(std::io::ErrorKind::Other, <span class="string">&quot;Failed to run&quot;</span>)
-        }).unwrap();
+            std::io::Error::new(std::io::ErrorKind::Other, <span class="macro">format!</span>(<span class="string">&quot;Failed to run: {}&quot;</span>, e))
+        }).unwrap_or_else(|e| {
+            <span class="macro">eprintln!</span>(<span class="string">&quot;Error: {}&quot;</span>, e);
+            std::process::exit(<span class="number">1</span>);
+        });        
     });
 }
 
