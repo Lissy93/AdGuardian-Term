@@ -89,8 +89,11 @@ fn main() {
 
         run().await.map_err(|e| {
             eprintln!("Failed to run: {}", e);
-            std::io::Error::new(std::io::ErrorKind::Other, "Failed to run")
-        }).unwrap();
+            std::io::Error::new(std::io::ErrorKind::Other, format!("Failed to run: {}", e))
+        }).unwrap_or_else(|e| {
+            eprintln!("Error: {}", e);
+            std::process::exit(1);
+        });        
     });
 }
 
