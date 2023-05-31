@@ -1,2 +1,1 @@
-Catch error caused by unknown AdGuard field, last_updated (#5)
-Add support for ARMv7 and ARM_64 binaries (#4)
+Enables support for HTTPS, via optional user-defined protocol (#7)
