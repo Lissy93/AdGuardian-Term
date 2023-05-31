@@ -136,6 +136,11 @@ The following params are accepted:
 - `ADGUARD_USERNAME` / `--adguard-username` - An AdGuard Home username
 - `ADGUARD_PASSWORD` / `--adguard-password` - An AdGuard Home password
 
+There's also some additional optional environment variables that you may set:
+
+- `ADGUARD_PROTOCOL` - The protocol to use when connecting to AdGuard (defaults to `http`)
+- `ADGUARD_UPDATE_INTERVAL` - The rate at which to refresh the UI in seconds (defaults to `2`)
+
 <details>
 <summary>Examples</summary>
 
