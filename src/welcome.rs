@@ -62,6 +62,7 @@ async fn verify_connection(
     client: &Client,
     ip: String,
     port: String,
+    protocol: String,
     username: String,
     password: String,
 ) -> Result<(), Box<dyn std::error::Error>> {
@@ -72,7 +73,7 @@ async fn verify_connection(
     let mut headers = reqwest::header::HeaderMap::new();
     headers.insert("Authorization", auth_header_value.parse()?);
 
-    let url = format!("http://{}:{}/control/status", ip, port);
+    let url = format!("{}://{}:{}/control/status", protocol, ip, port);
 
     match client
         .get(&url)
@@ -105,6 +106,9 @@ pub async fn welcome() -> Result<(), Box<dyn std::error::Error>> {
         ("--adguard-password", "ADGUARD_PASSWORD"),
     ];
 
+    let protocol: String = env::var("ADGUARD_PROTOCOL").unwrap_or_else(|_| "http".into()).parse()?;
+    env::set_var("ADGUARD_PROTOCOL", protocol);
+
     // Parse command line arguments
     let mut args = std::env::args().peekable();
     while let Some(arg) = args.next() {
@@ -136,8 +140,9 @@ pub async fn welcome() -> Result<(), Box<dyn std::error::Error>> {
 
     let ip = get_env("ADGUARD_IP")?;
     let port = get_env("ADGUARD_PORT")?;
+    let protocol = get_env("ADGUARD_PROTOCOL")?;
     let username = get_env("ADGUARD_USERNAME")?;
     let password = get_env("ADGUARD_PASSWORD")?;
-
-    verify_connection(&client, ip, port, username, password).await
+    
+    verify_connection(&client, ip, port, protocol, username, password).await
 }

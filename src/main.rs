@@ -24,9 +24,11 @@ async fn run() -> anyhow::Result<()> {
     // AdGuard instance details, from env vars (verified in welcome.rs)
     let ip = env::var("ADGUARD_IP")?;
     let port = env::var("ADGUARD_PORT")?;
-    let hostname = format!("http://{}:{}", ip, port);
+    let protocol = env::var("ADGUARD_PROTOCOL").unwrap_or("http".to_string());
+    let hostname = format!("{}://{}:{}", protocol, ip, port);
     let username = env::var("ADGUARD_USERNAME")?;
     let password = env::var("ADGUARD_PASSWORD")?;
+    
 
     // Fetch data that doesn't require updates
     let filters = fetch_adguard_filter_list(&client, &hostname, &username, &password).await?;
