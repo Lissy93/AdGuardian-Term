@@ -141,6 +141,11 @@
 <a href="#141" id="141">141</a>
 <a href="#142" id="142">142</a>
 <a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{
     io:: {<span class="self">self</span>, Write},
     env,
@@ -205,6 +210,7 @@
     client: <span class="kw-2">&amp;</span>Client,
     ip: String,
     port: String,
+    protocol: String,
     username: String,
     password: String,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
@@ -215,7 +221,7 @@
     <span class="kw">let </span><span class="kw-2">mut </span>headers = reqwest::header::HeaderMap::new();
     headers.insert(<span class="string">&quot;Authorization&quot;</span>, auth_header_value.parse()<span class="question-mark">?</span>);
 
-    <span class="kw">let </span>url = <span class="macro">format!</span>(<span class="string">&quot;http://{}:{}/control/status&quot;</span>, ip, port);
+    <span class="kw">let </span>url = <span class="macro">format!</span>(<span class="string">&quot;{}://{}:{}/control/status&quot;</span>, protocol, ip, port);
 
     <span class="kw">match </span>client
         .get(<span class="kw-2">&amp;</span>url)
@@ -248,6 +254,9 @@
         (<span class="string">&quot;--adguard-password&quot;</span>, <span class="string">&quot;ADGUARD_PASSWORD&quot;</span>),
     ];
 
+    <span class="kw">let </span>protocol: String = env::var(<span class="string">&quot;ADGUARD_PROTOCOL&quot;</span>).unwrap_or_else(|<span class="kw">_</span>| <span class="string">&quot;http&quot;</span>.into()).parse()<span class="question-mark">?</span>;
+    env::set_var(<span class="string">&quot;ADGUARD_PROTOCOL&quot;</span>, protocol);
+
     <span class="comment">// Parse command line arguments
     </span><span class="kw">let </span><span class="kw-2">mut </span>args = std::env::args().peekable();
     <span class="kw">while let </span><span class="prelude-val">Some</span>(arg) = args.next() {
@@ -279,10 +288,11 @@
 
     <span class="kw">let </span>ip = get_env(<span class="string">&quot;ADGUARD_IP&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>port = get_env(<span class="string">&quot;ADGUARD_PORT&quot;</span>)<span class="question-mark">?</span>;
+    <span class="kw">let </span>protocol = get_env(<span class="string">&quot;ADGUARD_PROTOCOL&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>username = get_env(<span class="string">&quot;ADGUARD_USERNAME&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>password = get_env(<span class="string">&quot;ADGUARD_PASSWORD&quot;</span>)<span class="question-mark">?</span>;
-
-    verify_connection(<span class="kw-2">&amp;</span>client, ip, port, username, password).<span class="kw">await
+    
+    verify_connection(<span class="kw-2">&amp;</span>client, ip, port, protocol, username, password).<span class="kw">await
 </span>}
 </code></pre></div>
 </section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="adguardian" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>

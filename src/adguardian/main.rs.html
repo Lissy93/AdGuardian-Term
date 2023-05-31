@@ -97,6 +97,8 @@
 <a href="#97" id="97">97</a>
 <a href="#98" id="98">98</a>
 <a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
 </pre><pre class="rust"><code><span class="kw">mod </span>fetch;
 <span class="kw">mod </span>ui;
 <span class="kw">mod </span>widgets;
@@ -123,9 +125,11 @@
     <span class="comment">// AdGuard instance details, from env vars (verified in welcome.rs)
     </span><span class="kw">let </span>ip = env::var(<span class="string">&quot;ADGUARD_IP&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>port = env::var(<span class="string">&quot;ADGUARD_PORT&quot;</span>)<span class="question-mark">?</span>;
-    <span class="kw">let </span>hostname = <span class="macro">format!</span>(<span class="string">&quot;http://{}:{}&quot;</span>, ip, port);
+    <span class="kw">let </span>protocol = env::var(<span class="string">&quot;ADGUARD_PROTOCOL&quot;</span>).unwrap_or(<span class="string">&quot;http&quot;</span>.to_string());
+    <span class="kw">let </span>hostname = <span class="macro">format!</span>(<span class="string">&quot;{}://{}:{}&quot;</span>, protocol, ip, port);
     <span class="kw">let </span>username = env::var(<span class="string">&quot;ADGUARD_USERNAME&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>password = env::var(<span class="string">&quot;ADGUARD_PASSWORD&quot;</span>)<span class="question-mark">?</span>;
+    
 
     <span class="comment">// Fetch data that doesn&#39;t require updates
     </span><span class="kw">let </span>filters = fetch_adguard_filter_list(<span class="kw-2">&amp;</span>client, <span class="kw-2">&amp;</span>hostname, <span class="kw-2">&amp;</span>username, <span class="kw-2">&amp;</span>password).<span class="kw">await</span><span class="question-mark">?</span>;
