@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - '*'
     paths:
       - src/**
       - Cargo.toml
@@ -15,7 +17,6 @@ env:
   DOCKER_USER: lissy93
   GHCR_REGISTRY: ghcr.io
   DOCKERHUB_REGISTRY: docker.io
-  GIT_TAG: ${{ github.ref == 'refs/tags/*' && github.ref || 'latest' }}
 
 jobs:
   docker:
@@ -24,11 +25,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
+
+      - name: Extract tag name
+        shell: bash
+        run: echo "GIT_TAG=$(echo ${GITHUB_REF#refs/tags/} | sed 's/\//_/g')" >> $GITHUB_ENV
+
       - name: Compute tags
         id: compute-tags
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "GHCR_TAG=${GHCR_REGISTRY}/${DOCKER_USER}/${IMAGE_NAME}:latest" >> $GITHUB_ENV
             echo "DOCKERHUB_TAG=${DOCKERHUB_REGISTRY}/${DOCKER_USER}/${IMAGE_NAME}:latest" >> $GITHUB_ENV
           else
@@ -52,10 +57,6 @@ jobs:
           registry: ${{ env.DOCKERHUB_REGISTRY }}
           username: ${{ env.DOCKER_USER }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Extract tag name
-        shell: bash
-        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
       - name: Build and push Docker images
         uses: docker/build-push-action@v2
