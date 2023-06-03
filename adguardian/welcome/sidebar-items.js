@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["get_env","print_ascii_art","print_error","print_info","verify_connection","welcome"]};
+window.SIDEBAR_ITEMS = {"fn":["check_version","get_env","print_ascii_art","print_error","print_info","verify_connection","welcome"]};

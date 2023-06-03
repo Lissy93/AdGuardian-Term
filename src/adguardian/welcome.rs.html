@@ -146,6 +146,76 @@
 <a href="#146" id="146">146</a>
 <a href="#147" id="147">147</a>
 <a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
 </pre><pre class="rust"><code><span class="kw">use </span>std::{
     io:: {<span class="self">self</span>, Write},
     env,
@@ -154,7 +224,11 @@
 <span class="kw">use </span>reqwest::{Client, Error};
 <span class="kw">use </span>colored::<span class="kw-2">*</span>;
 
-<span class="kw">fn </span>print_info(text: <span class="kw-2">&amp;</span>str, is_secondary: bool) {
+<span class="kw">use </span>serde_json::Value;
+<span class="kw">use </span>semver::{Version};
+
+<span class="doccomment">/// Reusable function that just prints success messages to the console
+</span><span class="kw">fn </span>print_info(text: <span class="kw-2">&amp;</span>str, is_secondary: bool) {
     <span class="kw">if </span>is_secondary {
         <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, text.green().italic().dimmed());
     } <span class="kw">else </span>{
@@ -162,8 +236,8 @@
     };
 }
 
-
-<span class="kw">fn </span>print_ascii_art() {
+<span class="doccomment">/// Prints the AdGuardian ASCII art to console
+</span><span class="kw">fn </span>print_ascii_art() {
     <span class="kw">let </span>art = <span class="string">r&quot;
  █████╗ ██████╗  ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ ██╗ █████╗ ███╗   ██╗
 ██╔══██╗██╔══██╗██╔════╝ ██║   ██║██╔══██╗██╔══██╗██╔══██╗██║██╔══██╗████╗  ██║
@@ -178,20 +252,23 @@
     print_info(<span class="string">&quot;For documentation and support, please visit: https://github.com/lissy93/adguardian-term\n&quot;</span>, <span class="bool-val">true</span>);
 }
 
-<span class="kw">fn </span>print_error(address: <span class="kw-2">&amp;</span>str, error: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Error&gt;) {
+<span class="doccomment">/// Print error message, along with (optional) stack trace, then exit
+</span><span class="kw">fn </span>print_error(message: <span class="kw-2">&amp;</span>str, sub_message: <span class="kw-2">&amp;</span>str, error: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Error&gt;) {
     <span class="macro">eprintln!</span>(
-        <span class="string">&quot;{}{}&quot;</span>,
-        <span class="macro">format!</span>(<span class="string">&quot;Failed to connect to AdGuard at {}&quot;</span>, address).red(),
+        <span class="string">&quot;{}{}{}&quot;</span>,
+        <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, message).red(),
         <span class="kw">match </span>error {
             <span class="prelude-val">Some</span>(err) =&gt; <span class="macro">format!</span>(<span class="string">&quot;\n{}&quot;</span>, err).red().dimmed(),
             <span class="prelude-val">None </span>=&gt; <span class="string">&quot;&quot;</span>.red().dimmed(),
         },
+        <span class="macro">format!</span>(<span class="string">&quot;\n{}&quot;</span>, sub_message).yellow(),
     );
-    <span class="macro">eprintln!</span>(<span class="string">&quot;{}\n{}&quot;</span>, <span class="string">&quot;\nPlease check your environmental variables and try again.&quot;</span>.yellow(), <span class="string">&quot;Exiting...&quot;</span>.blue());
+
+    std::process::exit(<span class="number">1</span>);
 }
 
-
-<span class="kw">fn </span>get_env(key: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;String, env::VarError&gt; {
+<span class="doccomment">/// Given a key, get the value from the environmental variables, and print it to the console
+</span><span class="kw">fn </span>get_env(key: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;String, env::VarError&gt; {
     env::var(key).map(|v| {
         <span class="macro">println!</span>(
             <span class="string">&quot;{}&quot;</span>,
@@ -206,7 +283,40 @@
     })
 }
 
-<span class="kw">async fn </span>verify_connection(
+<span class="doccomment">/// Given a possibly undefined version number, check if it&#39;s present and supported
+</span><span class="kw">fn </span>check_version(version: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
+    <span class="kw">let </span>min_version = Version::parse(<span class="string">&quot;0.107.29&quot;</span>).unwrap();
+    
+    <span class="kw">match </span>version {
+        <span class="prelude-val">Some</span>(version_str) =&gt; {
+            <span class="kw">let </span>adguard_version = Version::parse(<span class="kw-2">&amp;</span>version_str[<span class="number">1</span>..]).unwrap();
+            
+            <span class="kw">if </span>adguard_version &lt; min_version {
+                print_error(
+                    <span class="string">&quot;AdGuard Home version is too old, and is now unsupported&quot;</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;You&#39;re running AdGuard {}. Please upgrade to v{} or later.&quot;</span>, version_str, min_version.to_string()).as_str(),
+                    <span class="prelude-val">None</span>,
+                );
+            }
+        },
+        <span class="prelude-val">None </span>=&gt; {
+            print_error(
+                <span class="string">&quot;Unsupported AdGuard Home version&quot;</span>,
+                <span class="macro">format!</span>(
+                    <span class="macro">concat!</span>(
+                        <span class="string">&quot;Failed to get the version number of your AdGuard Home instance.\n&quot;</span>,
+                        <span class="string">&quot;This usually means you&#39;re running an old, and unsupported version.\n&quot;</span>,
+                        <span class="string">&quot;Please upgrade to v{} or later.&quot;
+                    </span>), min_version.to_string()
+                ).as_str(),
+                <span class="prelude-val">None</span>,
+            );
+        }
+    }
+}
+
+<span class="doccomment">/// With the users specified AdGuard details, verify the connection (exit on fail)
+</span><span class="kw">async fn </span>verify_connection(
     client: <span class="kw-2">&amp;</span>Client,
     ip: String,
     port: String,
@@ -230,17 +340,45 @@
         .send()
         .<span class="kw">await </span>{
         <span class="prelude-val">Ok</span>(res) <span class="kw">if </span>res.status().is_success() =&gt; {
-            <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="string">&quot;AdGuard connection successful!\n&quot;</span>.green());
+            <span class="comment">// Get version string (if present), and check if valid - exit if not
+            </span><span class="kw">let </span>body: Value = res.json().<span class="kw">await</span><span class="question-mark">?</span>;
+            check_version(body[<span class="string">&quot;version&quot;</span>].as_str());
+            <span class="comment">// All good! Print success message :)
+            </span><span class="kw">let </span>safe_version = body[<span class="string">&quot;version&quot;</span>].as_str().unwrap_or(<span class="string">&quot;mystery version&quot;</span>);
+            <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;AdGuard ({}) connection successful!\n&quot;</span>, safe_version).green());
             <span class="prelude-val">Ok</span>(())
         }
-        <span class="prelude-val">Ok</span>(<span class="kw">_</span>) | <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-            print_error(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{}:{}&quot;</span>, ip, port), <span class="prelude-val">None</span>);
-            std::process::exit(<span class="number">1</span>);
+        <span class="comment">// Connection failed to authenticate. Print error and exit
+        </span><span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
+            print_error(
+                <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Authentication with AdGuard at {}:{} failed&quot;</span>, ip, port),
+                <span class="string">&quot;Please check your environmental variables and try again.&quot;</span>,
+                <span class="prelude-val">None</span>,
+            );
+            <span class="prelude-val">Ok</span>(())
+        },
+        <span class="comment">// Connection failed to establish. Print error and exit
+        </span><span class="prelude-val">Err</span>(e) =&gt; {
+            print_error(
+                <span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;Failed to connect to AdGuard at: {}:{}&quot;</span>, ip, port),
+                <span class="string">&quot;Please check your environmental variables and try again.&quot;</span>,
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>e),
+            );
+            <span class="prelude-val">Ok</span>(())
         }
     }
 }
 
-<span class="kw">pub async fn </span>welcome() -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
+<span class="doccomment">/// Initiate the welcome script
+/// This function will:
+/// - Print the AdGuardian ASCII art
+/// - Check for the required environmental variables
+/// - Prompt the user to enter any missing variables
+/// - Verify the connection to the AdGuard instance
+/// - Verify authentication is successful
+/// - Verify the AdGuard Home version is supported
+/// - Then either print a success message, or show instructions to fix and exit
+</span><span class="kw">pub async fn </span>welcome() -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
     print_ascii_art();
     <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="string">&quot;Starting initialization checks...&quot;</span>.blue());
 
@@ -286,13 +424,15 @@
         }
     }
 
-    <span class="kw">let </span>ip = get_env(<span class="string">&quot;ADGUARD_IP&quot;</span>)<span class="question-mark">?</span>;
+    <span class="comment">// Grab the values of the (now set) environmental variables
+    </span><span class="kw">let </span>ip = get_env(<span class="string">&quot;ADGUARD_IP&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>port = get_env(<span class="string">&quot;ADGUARD_PORT&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>protocol = get_env(<span class="string">&quot;ADGUARD_PROTOCOL&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>username = get_env(<span class="string">&quot;ADGUARD_USERNAME&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let </span>password = get_env(<span class="string">&quot;ADGUARD_PASSWORD&quot;</span>)<span class="question-mark">?</span>;
     
-    verify_connection(<span class="kw-2">&amp;</span>client, ip, port, protocol, username, password).<span class="kw">await
+    <span class="comment">// Verify that we can connect, authenticate, and that version is supported (exit on failure)
+    </span>verify_connection(<span class="kw-2">&amp;</span>client, ip, port, protocol, username, password).<span class="kw">await
 </span>}
 </code></pre></div>
 </section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="adguardian" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0 (84c898d65 2023-04-16)" data-search-js="search-8a59a8356673ec1f.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
