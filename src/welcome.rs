@@ -9,6 +9,7 @@ use colored::*;
 use serde_json::Value;
 use semver::{Version};
 
+/// Reusable function that just prints success messages to the console
 fn print_info(text: &str, is_secondary: bool) {
     if is_secondary {
         println!("{}", text.green().italic().dimmed());
@@ -17,7 +18,7 @@ fn print_info(text: &str, is_secondary: bool) {
     };
 }
 
-
+/// Prints the AdGuardian ASCII art to console
 fn print_ascii_art() {
     let art = r"
  █████╗ ██████╗  ██████╗ ██╗   ██╗ █████╗ ██████╗ ██████╗ ██╗ █████╗ ███╗   ██╗
@@ -33,6 +34,7 @@ fn print_ascii_art() {
     print_info("For documentation and support, please visit: https://github.com/lissy93/adguardian-term\n", true);
 }
 
+/// Print error message, along with (optional) stack trace, then exit
 fn print_error(message: &str, sub_message: &str, error: Option<&Error>) {
     eprintln!(
         "{}{}{}",
@@ -47,6 +49,7 @@ fn print_error(message: &str, sub_message: &str, error: Option<&Error>) {
     std::process::exit(1);
 }
 
+/// Given a key, get the value from the environmental variables, and print it to the console
 fn get_env(key: &str) -> Result<String, env::VarError> {
     env::var(key).map(|v| {
         println!(
@@ -94,7 +97,7 @@ fn check_version(version: Option<&str>) {
     }
 }
 
-
+/// With the users specified AdGuard details, verify the connection (exit on fail)
 async fn verify_connection(
     client: &Client,
     ip: String,
@@ -148,7 +151,15 @@ async fn verify_connection(
     }
 }
 
-
+/// Initiate the welcome script
+/// This function will:
+/// - Print the AdGuardian ASCII art
+/// - Check for the required environmental variables
+/// - Prompt the user to enter any missing variables
+/// - Verify the connection to the AdGuard instance
+/// - Verify authentication is successful
+/// - Verify the AdGuard Home version is supported
+/// - Then either print a success message, or show instructions to fix and exit
 pub async fn welcome() -> Result<(), Box<dyn std::error::Error>> {
     print_ascii_art();
     println!("{}", "Starting initialization checks...".blue());
