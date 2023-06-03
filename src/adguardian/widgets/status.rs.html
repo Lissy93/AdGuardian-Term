@@ -139,7 +139,7 @@
     ]),
     Spans::from(<span class="macro">vec!</span>[
       Span::styled(<span class="string">&quot;Avg Processing Time: &quot;</span>, Style::default()),
-      Span::styled(<span class="macro">format!</span>(<span class="string">&quot;{}ms&quot;</span>, stats.avg_processing_time), value_style),
+      Span::styled(<span class="macro">format!</span>(<span class="string">&quot;{}ms&quot;</span>, (stats.avg_processing_time * <span class="number">1000.0</span>) <span class="kw">as </span>i16), value_style),
     ]),
     Spans::from(<span class="macro">vec!</span>[
       Span::styled(<span class="string">&quot;Version: &quot;</span>, Style::default()),
