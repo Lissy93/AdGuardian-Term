@@ -117,7 +117,7 @@ bash <(curl -sL https://raw.githubusercontent.com/Lissy93/AdGuardian-Term/main/q
 - Docker is the easiest but needs to be installed, and adds a bit of overhead (12Mb, to be precise)
 - Where as using the executable won't require any additional dependencies
 - If you've got Rust installed, fetching from crates.io will also be both easy and performant
-- If you're system architecture isn't supported you'll need to build from source, as you also will if you wish to run a fork or make amendments to the code
+- If your system architecture isn't supported you'll need to build from source, as you also will if you wish to run a fork or make amendments to the code
 
 </details>
 
