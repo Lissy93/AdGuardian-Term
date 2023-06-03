@@ -25,8 +25,12 @@ crossterm = { version = "0.22.0", features = ["serde"] }
 futures = "0.3"
 # HTTP client
 reqwest = { version = "0.11", default-features = false, features = ["blocking", "json", "rustls-tls"] }
-# Decerilization of JSON responses
+# Decerilization of responses
 serde = { version = "1.0", features = ["derive"] }
+# Decerilization of JSON responses
+serde_json = "1.0"
+# Read and calculate semantic version numbers
+semver = "1.0"
 # Date + time manipulation
 tokio = { version = "1", features = ["full"] }
 # Terminal UI library
