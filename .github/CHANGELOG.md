@@ -1,1 +1,2 @@
-Enables support for HTTPS, via optional user-defined protocol (#7)
+Adds a check to ensure that the users version of AdGuard Home is recent enough to support the required API calls (#5)
+Allows for graceful exit, instead of panicking
