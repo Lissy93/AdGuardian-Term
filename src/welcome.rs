@@ -7,6 +7,7 @@ use reqwest::{Client, Error};
 use colored::*;
 
 use serde_json::Value;
+use serde::Deserialize;
 use semver::{Version};
 
 /// Reusable function that just prints success messages to the console
@@ -31,7 +32,7 @@ fn print_ascii_art() {
     print_info(art, false);
     print_info("\nWelcome to AdGuardian Terminal Edition!", false);
     print_info("Terminal-based, real-time traffic monitoring and statistics for your AdGuard Home instance", true);
-    print_info("For documentation and support, please visit: https://github.com/lissy93/adguardian-term\n", true);
+    print_info("For documentation and support, please visit: https://github.com/lissy93/adguardian-term", true);
 }
 
 /// Print error message, along with (optional) stack trace, then exit
@@ -151,9 +152,83 @@ async fn verify_connection(
     }
 }
 
+#[derive(Deserialize)]
+struct CratesIoResponse {
+    #[serde(rename = "crate")]
+    krate: Crate,
+}
+
+#[derive(Deserialize)]
+struct Crate {
+    max_version: String,
+}
+
+/// Gets the latest version of the crate from crates.io
+async fn get_latest_version(crate_name: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let url = format!("https://crates.io/api/v1/crates/{}", crate_name);
+    let client = reqwest::Client::new();
+    let res = client.get(&url)
+        .header(reqwest::header::USER_AGENT, "version_check (adguardian.as93.net)")
+        .send()
+        .await?;
+
+    if res.status().is_success() {
+        let response: CratesIoResponse = res.json().await?;
+        Ok(response.krate.max_version)
+    } else {
+        let status = res.status();
+        let body = res.text().await?;
+        Err(format!("Request failed with status {}: body: {}", status, body).into())
+    }
+}
+
+/// Checks for updates to the crate, and prints a message if an update is available
+async fn check_for_updates() {
+    // Get crate name and version from Cargo.toml
+    let crate_name = env!("CARGO_PKG_NAME");
+    let crate_version = env!("CARGO_PKG_VERSION");
+    println!("{}", "\nChecking for updates...".blue());
+    // Parse the current version, and fetch and parse the latest version
+    let current_version = Version::parse(crate_version).unwrap_or_else(|_| {
+        Version::parse("0.0.0").unwrap()
+    });
+    let latest_version = Version::parse(
+        &get_latest_version(crate_name).await.unwrap_or_else(|_| {
+            "0.0.0".to_string()
+        })
+    ).unwrap();
+
+    // Compare the current and latest versions, and print the appropriate message
+    if current_version == Version::parse("0.0.0").unwrap() || latest_version == Version::parse("0.0.0").unwrap() {
+        println!("{}", "Unable to check for updates".yellow());
+    } else if current_version < latest_version {
+        println!("{}",
+            format!(
+                "A new version of AdGuardian is available.\nUpdate from {} to {} for the best experience",
+                current_version.to_string().bold(),
+                latest_version.to_string().bold()
+            ).yellow()
+        );
+    } else if current_version == latest_version {
+        println!(
+            "{}",
+            format!("AdGuardian is up-to-date, running version {}", current_version.to_string().bold()).green()
+        );
+    } else if current_version > latest_version {
+        println!(
+            "{}",
+            format!("Running a pre-released edition of AdGuardian, version {}", current_version.to_string().bold()).green()
+        );
+    } else {
+        println!("{}", "Unable to check for updates".yellow());
+    }
+}
+
+
 /// Initiate the welcome script
 /// This function will:
 /// - Print the AdGuardian ASCII art
+/// - Check if there's an update available
 /// - Check for the required environmental variables
 /// - Prompt the user to enter any missing variables
 /// - Verify the connection to the AdGuard instance
@@ -162,7 +237,11 @@ async fn verify_connection(
 /// - Then either print a success message, or show instructions to fix and exit
 pub async fn welcome() -> Result<(), Box<dyn std::error::Error>> {
     print_ascii_art();
-    println!("{}", "Starting initialization checks...".blue());
+
+    // Check for updates
+    check_for_updates().await;
+
+    println!("{}", "\nStarting initialization checks...".blue());
 
     let client = Client::new();
 
@@ -214,5 +293,7 @@ pub async fn welcome() -> Result<(), Box<dyn std::error::Error>> {
     let password = get_env("ADGUARD_PASSWORD")?;
     
     // Verify that we can connect, authenticate, and that version is supported (exit on failure)
-    verify_connection(&client, ip, port, protocol, username, password).await
+    verify_connection(&client, ip, port, protocol, username, password).await?;
+
+    Ok(())
 }
