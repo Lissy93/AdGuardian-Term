@@ -102,6 +102,14 @@ make
 
 > You'll need `git`, `cargo` and `make` (see [here](#development) for installation notes). You can also run the cargo commands defined in the Makefile directly, e.g. `cargo run`
 
+### Scoop
+
+```
+scoop install extras/adguardian
+```
+
+> For Windows users, AdGuardian is availible via the [Scoop](https://scoop.sh/) package manager, as part of the `extras` bucket - You'll need Scoop installed, then follow [these instructions](https://scoop.sh/#/apps?q=adguardian). This was contributed by [@kzshantonu](https://github.com/kzshantonu) in [ScoopInstaller/Extras#11386](https://github.com/ScoopInstaller/Extras/pull/11386)
+
 ### One-Liner
 
 ```bash
