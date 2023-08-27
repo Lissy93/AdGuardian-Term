@@ -345,6 +345,13 @@ The testing, building, and publishing of the app is done with GitHub Actions.
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/digitalarche">
+            <img src="https://avatars.githubusercontent.com/u/6546135?v=4" width="80;" alt="digitalarche"/>
+            <br />
+            <sub><b>Digital Archeology</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/bmcgonag">
             <img src="https://avatars.githubusercontent.com/u/7346620?u=2a0f9284f3e12ac1cc15288c254d1ec68a5081e8&v=4" width="80;" alt="bmcgonag"/>
             <br />
@@ -371,20 +378,13 @@ The testing, building, and publishing of the app is done with GitHub Actions.
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/Bastii717">
-            <img src="https://avatars.githubusercontent.com/u/53431819?v=4" width="80;" alt="Bastii717"/>
-            <br />
-            <sub><b>Null</b></sub>
-        </a>
     </td></tr>
 <tr>
     <td align="center">
-        <a href="https://github.com/MikaPST">
-            <img src="https://avatars.githubusercontent.com/u/56961056?u=3da81a03cbe66a03bbb4afbf2751d71b7a94e28f&v=4" width="80;" alt="MikaPST"/>
+        <a href="https://github.com/Bastii717">
+            <img src="https://avatars.githubusercontent.com/u/53431819?u=dff9e241e6dbecbc283ee13486a2312cb3dd9784&v=4" width="80;" alt="Bastii717"/>
             <br />
-            <sub><b>Michaël</b></sub>
+            <sub><b>Null</b></sub>
         </a>
     </td>
     <td align="center">
