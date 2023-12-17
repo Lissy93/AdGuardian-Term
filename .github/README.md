@@ -8,7 +8,7 @@
 
 ## About
 
-AdGuardian Terminal Eddition - Keep an eye on your traffic, with this (unofficial) buddy for your AdGuard Home instance
+AdGuardian Terminal Edition - Keep an eye on your traffic, with this (unofficial) buddy for your AdGuard Home instance
 
 <p align="center">
 <img width="600" src="https://i.ibb.co/Nrtd01d/adguardian-demo.gif?" >
@@ -25,7 +25,7 @@ Features:
 
 About AdGuard:
 
-[AdGuard Home](https://github.com/AdguardTeam/AdGuardHome) is a free and open source self-hosted (or managed) network-wide ad + tracker blocker. It operates as a DNS server that re-routes tracking domains to a "black hole", thus preventing your devices from connecting to those servers. It makes your internet, faster, safer and gives you a bunch of useful features, like encrypted DNS (DoH, DoT, DNSCrypt), parental controls, blocking of malware / phishing, per-device configs, custom DNS rules, etc.
+[AdGuard Home](https://github.com/AdguardTeam/AdGuardHome) is a free and open source self-hosted (or managed) network-wide ad + tracker blocker. It operates as a DNS server that re-routes tracking domains to a [DNS sinkhole](https://en.wikipedia.org/wiki/DNS_sinkhole) thus preventing your devices from connecting to those domains. It makes your internet faster, safer, and gives you a lot of useful features, like encrypted DNS support (DoH, DoT, DNSCrypt), parental controls, blocking of malware / phishing domains with a toggle in settings, per-device configs, custom DNS rules and more.
 
 <details>
 <summary><b>Contents</b></summary>
@@ -75,13 +75,16 @@ docker run -it lissy93/adguardian
 ### Executable
 
 ```bash
-curl -o adguardian https://github.com/Lissy93/AdGuardian-Term/releases/latest/download/adguardian-linux && \
-chmod +x adguardian && \
+wget -P ./adguardian https://github.com/Lissy93/AdGuardian-Term/releases/latest/download/adguardian-linux
+cd ./adguardian
+chmod +x adguardian
 ./adguardian
 ```
 
-> In the above example, don't forget to update the URL to download the latest stable version for your operating system<br>
-> You may also just head over the the [Releases](https://github.com/Lissy93/AdGuardian-Term/releases) tab, download the latest executable, and double-click on it to run
+> In the above example, don't forget to update the URL to download the latest stable version for your operating system.<br>
+> An example would be `wget -P ./adguardian https://github.com/Lissy93/AdGuardian-Term/releases/download/1.3.0/adguardian-x86_64`
+> In the above example, you would then use `chmod +x adguardian-x86_64` and `./adguardian-x86_64` as the last two commands to make it executable and run it.
+> You may also just head over the the [Releases](https://github.com/Lissy93/AdGuardian-Term/releases) tab, download the latest executable, and double-click on it to run.
 
 ### Install from Crates.io
 
@@ -140,7 +143,7 @@ If any of these fields are missing or incomplete, you'll be prompted to enter a 
 The following params are accepted:
 
 - `ADGUARD_IP` / `--adguard-ip` - The IP address of your local AdGuard Home instance
-- `ADGUARD_PORT` / `--adguard-port` - The port that AdGuard is running on
+- `ADGUARD_PORT` / `--adguard-port` - The port that AdGuard Web Interface is running on
 - `ADGUARD_USERNAME` / `--adguard-username` - An AdGuard Home username
 - `ADGUARD_PASSWORD` / `--adguard-password` - An AdGuard Home password
 
