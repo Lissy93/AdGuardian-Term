@@ -14,7 +14,7 @@ AdGuardian Terminal Eddition - Keep an eye on your traffic, with this (unofficia
 <img width="600" src="https://i.ibb.co/Nrtd01d/adguardian-demo.gif?" >
 </p>
 
-Features:
+#### Features
 - **Real-time Query Monitoring**: _Fetches and displays all DNS queries in real time, letting you see exactly what's happening on your network at any given moment_
 - **Block and Allow Stats**: _Get a quick overview of the number of queries that have been allowed, filtered or blocked by AdGuard_
 - **Historical Query Counts**: _Analyze network activity over time with historical query count data. This lets you track trends and spot any unusual activity_
@@ -23,8 +23,7 @@ Features:
 - **Easy and Lightweight**: _AdGuardian can be run either with a super tiny Docker image, or directly with the zero-dependency executable_
 - **Good and Safe**: _Written in Rust and unit tested, the app runs locally with no external requests, and (of course) it's fully open source_
 
-About AdGuard:
-
+#### About AdGuard
 [AdGuard Home](https://github.com/AdguardTeam/AdGuardHome) is a free and open source self-hosted (or managed) network-wide ad + tracker blocker. It operates as a DNS server that re-routes tracking domains to a "black hole", thus preventing your devices from connecting to those servers. It makes your internet, faster, safer and gives you a bunch of useful features, like encrypted DNS (DoH, DoT, DNSCrypt), parental controls, blocking of malware / phishing, per-device configs, custom DNS rules, etc.
 
 <details>
@@ -53,6 +52,7 @@ About AdGuard:
   - [Sponsors](#sponsors)
   - [Dependencies](#dependencies)
 - [Mirror](#mirror)
+- [Alterntives](#alterntives)
 - [Contributing](#contributing)
 - [License](#license)
 	
@@ -123,7 +123,7 @@ bash <(curl -sL https://raw.githubusercontent.com/Lissy93/AdGuardian-Term/main/q
 <summary><h4>Not sure which method to choose?</h4></summary>
 
 - Docker is the easiest but needs to be installed, and adds a bit of overhead (12Mb, to be precise)
-- Where as using the executable won't require any additional dependencies
+- Whereas using the executable won't require any additional dependencies
 - If you've got Rust installed, fetching from crates.io will also be both easy and performant
 - If your system architecture isn't supported you'll need to build from source, as you also will if you wish to run a fork or make amendments to the code
 
@@ -200,6 +200,12 @@ Another great option is [gotty](https://github.com/yudai/gotty), which works in 
 
 You can also combine this with a service like [ngrok](https://ngrok.com/) to forward the port, and access the dashboard from anywhere. But be careful to apply the correct access controls!
 
+Another fun idea, could be to display it on a little screen, either atatched or SSH'd into your AdGuard box.
+
+<p align="center">
+<img src="https://i.ibb.co/VNL65hZ/20230529-165416.jpg" width="300" />
+</p>
+
 ---
 
 ## Development
@@ -210,7 +216,7 @@ You'll need Rust installed. Run: `curl --proto '=https' --tlsv1.2 -sSf https://s
 
 Then clone the repo, and cd into it, with: `git clone git@github.com:Lissy93/AdGuardian-Term.git` && `cd AdGuardian-Term`
 
-You can view the full list of availible project commands in the [Makefile](https://github.com/Lissy93/AdGuardian-Term/blob/main/Makefile)
+You can view the full list of availible project commands in the [`Makefile`](https://github.com/Lissy93/AdGuardian-Term/blob/main/Makefile)
 
 ### Run
 
@@ -218,7 +224,7 @@ To build and run the project for development, run `cargo run`
 
 ### Technical Docs
 
-The documentation can be viewed at: 
+The documentation can be viewed at: [lissy93.github.io/AdGuardian-Term](https://lissy93.github.io/AdGuardian-Term/adguardian)
 
 ### Testing and Quality
 
@@ -237,24 +243,16 @@ You can execute this directly, e.g. by running `./target/release/adguardian` (ad
 ### CI / CD
 
 The testing, building, and publishing of the app is done with GitHub Actions.
+Below is an outline + current status of each workflow.
 
-<details>
-<summary>View Current Workflow Status</summary>
-
-- Build Docker image and push to registry
-  - [![Build Docker Image 🐳](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/build-docker.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/build-docker.yml)
-- Compile binaries and upload artifacts to release
-  - [![Compile Release 🚀](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/release-binaries.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/release-binaries.yml)
-- Publish compiled app to crates.io
-  - [![Publish to Crates.io 📦](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/push-cargo.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/push-cargo.yml)
-- Generate documentation from Rustdoc, upload to GH pages
-  - [![Generate Rust Docs 📝](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/publish-docs.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/publish-docs.yml)
-- Sync repo with downstream codeberg mirror
-  - [![Mirror to Codeberg 🪞](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/mirror.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/mirror.yml)
-- Insert list of contributors + sponsors into readme
-  - [![Insert Contributors 👥](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/insert-contributors.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/insert-contributors.yml)
-
-</details>
+| Workflow                                           | Status                                                                                                                                                                |
+|----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Build Docker image and push to registry            | [![Build Docker Image 🐳](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/build-docker.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/build-docker.yml) |
+| Compile binaries and upload artifacts to release   | [![Compile Release 🚀](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/release-binaries.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/release-binaries.yml) |
+| Publish compiled app to crates.io                  | [![Publish to Crates.io 📦](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/push-cargo.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/push-cargo.yml) |
+| Generate documentation from Rustdoc, upload to GH pages | [![Generate Rust Docs 📝](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/publish-docs.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/publish-docs.yml) |
+| Sync repo with downstream codeberg mirror          | [![Mirror to Codeberg 🪞](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/mirror.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/mirror.yml) |
+| Insert list of contributors + sponsors into readme | [![Insert Contributors 👥](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/insert-contributors.yml/badge.svg)](https://github.com/Lissy93/AdGuardian-Term/actions/workflows/insert-contributors.yml) |
 
 ---
 
@@ -426,6 +424,22 @@ A mirror of this repository is published at: [codeberg.org/alicia/adguardian](ht
 
 ---
 
+## Alterntives
+
+This project was heavily inspired by [PADD](https://github.com/pi-hole/PADD) - terminal status for Pi-Hole users. If you're running [Pi-Hole](https://pi-hole.net/) instead of AdGuard, I highly reccomend you check that out, as it's awesome.
+
+Other developers have built similar AdGuard Home monitoring programs for mobile, including:
+- iOS app: [AdGuard Home Remote](https://apps.apple.com/us/app/adguard-home-remote/id1543143740) by RocketScience IT
+- Android app: [AdGuard Home Manager](https://play.google.com/store/apps/details?id=com.jgeek00.adguard_home_manager) by [JGeek00](https://github.com/JGeek00)
+
+If you're looking for more AdGuard add-ons, then check [this section](https://github.com/AdguardTeam/AdGuardHome#uses) of their repo.
+
+If you're running [Dashy](https://github.com/Lissy93/dashy/) (a Homelab Dashboard app (which I am the author of)), then there's also 4 [AdGuard Home Widgets](https://github.com/Lissy93/dashy/blob/master/docs/widgets.md#adguard-home-block-stats).
+
+Before I created this, I first built the same product in Go Lang. You can view that [here](https://github.com/Lissy93/OLD_AdGuardian-Term) - it's fully functional, but not as good as the Rust version (There were some valuable lessons that I learnt the hard way about choosing the right tech stack).
+
+---
+
 ## Contributing
 
 Contributions of any kind are very welcome (and would be much appreciated!)
@@ -433,7 +447,7 @@ For Code of Conduct, see [Contributor Convent](https://www.contributor-covenant.
 For project setup, see the [Development](#development) section.
 
 #### New here?
-To get started, fork the repo, make your changes, add, commit and push the code, then come back here to open a pull request. If you're new to GitHub or open source, [this guide](https://www.freecodecamp.org/news/how-to-make-your-first-pull-request-on-github-3#let-s-make-our-first-pull-request-) or the [git docs](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) may help you get started, but feel free to reach out if you need any support.
+To get started, fork the repo, make your changes, add, commit and push the code, then come back here to open a pull request. If you're new to GitHub or open source, [this tutorial](https://www.freecodecamp.org/news/how-to-make-your-first-pull-request-on-github-3#let-s-make-our-first-pull-request-) may help, I've also put some beginner guides together at [git-into-open-source](https://github.com/Lissy93/git-into-open-source) - but feel free to reach out if you need any support.
 
 #### Not a coder?
 You can support the project in other ways too, drop us a star, consider sponsoring us on GitHub, share within your network, and report any bugs you come across.
@@ -481,7 +495,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   <sup>Thanks for visiting :)</sup>
 </p>
 
-<!-- Dinosaur -->
+<!-- Dinosaurs are Awesome -->
 <!-- 
                         . - ~ ~ ~ - .
       ..     _      .-~               ~-.
