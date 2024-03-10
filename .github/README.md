@@ -315,7 +315,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/bgadrian">
-            <img src="https://avatars.githubusercontent.com/u/830001?v=4" width="80;" alt="bgadrian"/>
+            <img src="https://avatars.githubusercontent.com/u/830001?u=69f115baad2fcd8c14eb05bdbf5cd80f4649a95a&v=4" width="80;" alt="bgadrian"/>
             <br />
             <sub><b>B.G.Adrian</b></sub>
         </a>
@@ -372,7 +372,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/InDieTasten">
-            <img src="https://avatars.githubusercontent.com/u/7047377?v=4" width="80;" alt="InDieTasten"/>
+            <img src="https://avatars.githubusercontent.com/u/7047377?u=8d8f8017628b38bc46dcbf3620e194b01d3fb2d1&v=4" width="80;" alt="InDieTasten"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
@@ -400,6 +400,13 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/mryesiller">
+            <img src="https://avatars.githubusercontent.com/u/24632172?v=4" width="80;" alt="mryesiller"/>
+            <br />
+            <sub><b>Göksel Yeşiller</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/forwardemail">
             <img src="https://avatars.githubusercontent.com/u/32481436?v=4" width="80;" alt="forwardemail"/>
             <br />
@@ -412,15 +419,15 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/frankdez93">
             <img src="https://avatars.githubusercontent.com/u/87549420?v=4" width="80;" alt="frankdez93"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/ratty222">
             <img src="https://avatars.githubusercontent.com/u/92832598?u=137b65530cbd5f5af9c24cde51baa6cc77cc934b&v=4" width="80;" alt="ratty222"/>
