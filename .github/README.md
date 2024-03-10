@@ -110,6 +110,16 @@ scoop install extras/adguardian
 
 > For Windows users, AdGuardian is availible via the [Scoop](https://scoop.sh/) package manager, as part of the `extras` bucket - You'll need Scoop installed, then follow [these instructions](https://scoop.sh/#/apps?q=adguardian). This was contributed by [@kzshantonu](https://github.com/kzshantonu) in [ScoopInstaller/Extras#11386](https://github.com/ScoopInstaller/Extras/pull/11386)
 
+### [AUR](https://aur.archlinux.org/packages/adguardian)
+
+```bash
+paru -Syu adguardian
+# or
+yay -Syu adguardian
+# or
+git clone https://aur.archlinux.org/adguardian.git && cd adguardian && makepkg -si
+```
+
 ### One-Liner
 
 ```bash
