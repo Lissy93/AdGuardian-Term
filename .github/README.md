@@ -288,6 +288,13 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/Sir-Photch">
+            <img src="https://avatars.githubusercontent.com/u/47949835?v=4" width="80;" alt="Sir-Photch"/>
+            <br />
+            <sub><b>Christoph</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/tromcho">
             <img src="https://avatars.githubusercontent.com/u/113139586?v=4" width="80;" alt="tromcho"/>
             <br />
@@ -317,13 +324,6 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/alydemah">
-            <img src="https://avatars.githubusercontent.com/u/652035?u=ac2c04e474da37bfeafcfa25076cc1800997aedb&v=4" width="80;" alt="alydemah"/>
-            <br />
-            <sub><b>Aly Mohamed</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/bgadrian">
             <img src="https://avatars.githubusercontent.com/u/830001?u=69f115baad2fcd8c14eb05bdbf5cd80f4649a95a&v=4" width="80;" alt="bgadrian"/>
             <br />
@@ -343,15 +343,15 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Eddy Lazzarin</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/AnandChowdhary">
             <img src="https://avatars.githubusercontent.com/u/2841780?u=747e554b3a7f12eb20b7910e1c87d817844f714f&v=4" width="80;" alt="AnandChowdhary"/>
             <br />
             <sub><b>Anand Chowdhary</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/shrippen">
             <img src="https://avatars.githubusercontent.com/u/2873570?v=4" width="80;" alt="shrippen"/>
@@ -386,15 +386,15 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/bmcgonag">
             <img src="https://avatars.githubusercontent.com/u/7346620?u=2a0f9284f3e12ac1cc15288c254d1ec68a5081e8&v=4" width="80;" alt="bmcgonag"/>
             <br />
             <sub><b>Brian McGonagill</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/vlad-timofeev">
             <img src="https://avatars.githubusercontent.com/u/11474041?u=eee43705b54d2ec9f51fc4fcce5ad18dd17c87e4&v=4" width="80;" alt="vlad-timofeev"/>
@@ -411,7 +411,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/mryesiller">
-            <img src="https://avatars.githubusercontent.com/u/24632172?v=4" width="80;" alt="mryesiller"/>
+            <img src="https://avatars.githubusercontent.com/u/24632172?u=0d20f2d615158f87cd60a3398d3efb026c32f291&v=4" width="80;" alt="mryesiller"/>
             <br />
             <sub><b>Göksel Yeşiller</b></sub>
         </a>
@@ -429,15 +429,15 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/frankdez93">
             <img src="https://avatars.githubusercontent.com/u/87549420?v=4" width="80;" alt="frankdez93"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/ratty222">
             <img src="https://avatars.githubusercontent.com/u/92832598?u=137b65530cbd5f5af9c24cde51baa6cc77cc934b&v=4" width="80;" alt="ratty222"/>
@@ -450,6 +450,13 @@ Below is an outline + current status of each workflow.
             <img src="https://avatars.githubusercontent.com/u/104868017?v=4" width="80;" alt="hernanpopper"/>
             <br />
             <sub><b>Null</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/terminaltrove">
+            <img src="https://avatars.githubusercontent.com/u/121595180?v=4" width="80;" alt="terminaltrove"/>
+            <br />
+            <sub><b>Terminal Trove</b></sub>
         </a>
     </td>
     <td align="center">
