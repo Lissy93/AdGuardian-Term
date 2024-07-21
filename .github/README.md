@@ -320,13 +320,6 @@ Below is an outline + current status of each workflow.
 <table>
 <tr>
     <td align="center">
-        <a href="https://github.com/github">
-            <img src="https://avatars.githubusercontent.com/u/9919?v=4" width="80;" alt="github"/>
-            <br />
-            <sub><b>GitHub</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/koconder">
             <img src="https://avatars.githubusercontent.com/u/25068?u=582657b23622aaa3dfe68bd028a780f272f456fa&v=4" width="80;" alt="koconder"/>
             <br />
@@ -360,15 +353,15 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Zach Biles</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/UlisesGascon">
             <img src="https://avatars.githubusercontent.com/u/5110813?u=3c41facd8aa26154b9451de237c34b0f78d672a5&v=4" width="80;" alt="UlisesGascon"/>
             <br />
             <sub><b>Ulises Gascón</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/digitalarche">
             <img src="https://avatars.githubusercontent.com/u/6546135?u=564756d7f44ab2206819eb3148f6d822673f5066&v=4" width="80;" alt="digitalarche"/>
@@ -403,15 +396,15 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Vlad</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/helixzz">
             <img src="https://avatars.githubusercontent.com/u/12218889?u=d06d0c103dfbdb99450623064f7da3c5a3675fb6&v=4" width="80;" alt="helixzz"/>
             <br />
             <sub><b>HeliXZz</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/patvdv">
             <img src="https://avatars.githubusercontent.com/u/12430107?u=e8911c2fb91af4d30432f76da8c40927b2830bd7&v=4" width="80;" alt="patvdv"/>
@@ -446,15 +439,15 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/getumbrel">
             <img src="https://avatars.githubusercontent.com/u/59408891?v=4" width="80;" alt="getumbrel"/>
             <br />
             <sub><b>Umbrel</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/M2TD">
             <img src="https://avatars.githubusercontent.com/u/85460457?v=4" width="80;" alt="M2TD"/>
