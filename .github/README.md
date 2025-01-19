@@ -298,8 +298,8 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/Sir-Photch">
-            <img src="https://avatars.githubusercontent.com/u/47949835?v=4" width="80;" alt="Sir-Photch"/>
+        <a href="https://github.com/shtrophic">
+            <img src="https://avatars.githubusercontent.com/u/47949835?v=4" width="80;" alt="shtrophic"/>
             <br />
             <sub><b>Christoph</b></sub>
         </a>
@@ -385,7 +385,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/arcestia">
-            <img src="https://avatars.githubusercontent.com/u/7936962?v=4" width="80;" alt="arcestia"/>
+            <img src="https://avatars.githubusercontent.com/u/7936962?u=41e34bb816ad09323e1650f3efc0bec4fb2bc5dd&v=4" width="80;" alt="arcestia"/>
             <br />
             <sub><b>Laurensius Jeffrey</b></sub>
         </a>
