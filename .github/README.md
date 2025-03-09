@@ -456,13 +456,6 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/rpvu">
-            <img src="https://avatars.githubusercontent.com/u/90328029?v=4" width="80;" alt="rpvu"/>
-            <br />
-            <sub><b>Null</b></sub>
-        </a>
-    </td>
-    <td align="center">
         <a href="https://github.com/terminaltrove">
             <img src="https://avatars.githubusercontent.com/u/121595180?v=4" width="80;" alt="terminaltrove"/>
             <br />
