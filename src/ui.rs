@@ -42,7 +42,7 @@ pub async fn draw_ui(
     terminal.clear()?;
 
     loop {
-        // Recieve query log and stats data from the fetcher
+        // Receive query log and stats data from the fetcher
         let data = match data_rx.recv().await {
             Some(data) => data,
             None => break, // Channel has been closed, so we break the loop
