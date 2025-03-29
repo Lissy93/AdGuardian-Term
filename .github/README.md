@@ -69,7 +69,7 @@ There are several options for running...
 ```bash
 docker run -it lissy93/adguardian
 ```
-> You may also pass in your AdGuard info with env vars (using `-e`), see the [Configuring](#configuring) section for an example, and list of availible config params.<br>
+> You may also pass in your AdGuard info with env vars (using `-e`), see the [Configuring](#configuring) section for an example, and list of available config params.<br>
 > If you experience issues with DockerHub, or would rather use a different registry, the image is also available via GHCR - just replace the image name with: `ghcr.io/lissy93/adguardian`. Alternatively, if you'd like to build it yourself from source, you can do so with `docker buildx build -t  adguardian .` then run it with `docker run -it adguardian`.
 
 ### Executable
@@ -108,7 +108,7 @@ make
 scoop install extras/adguardian
 ```
 
-> For Windows users, AdGuardian is availible via the [Scoop](https://scoop.sh/) package manager, as part of the `extras` bucket - You'll need Scoop installed, then follow [these instructions](https://scoop.sh/#/apps?q=adguardian). This was contributed by [@kzshantonu](https://github.com/kzshantonu) in [ScoopInstaller/Extras#11386](https://github.com/ScoopInstaller/Extras/pull/11386)
+> For Windows users, AdGuardian is available via the [Scoop](https://scoop.sh/) package manager, as part of the `extras` bucket - You'll need Scoop installed, then follow [these instructions](https://scoop.sh/#/apps?q=adguardian). This was contributed by [@kzshantonu](https://github.com/kzshantonu) in [ScoopInstaller/Extras#11386](https://github.com/ScoopInstaller/Extras/pull/11386)
 
 ### [AUR](https://aur.archlinux.org/packages/adguardian)
 
@@ -213,7 +213,7 @@ Another great option is [gotty](https://github.com/yudai/gotty), which works in 
 
 You can also combine this with a service like [ngrok](https://ngrok.com/) to forward the port, and access the dashboard from anywhere. But be careful to apply the correct access controls!
 
-Another fun idea, could be to display it on a little screen, either atatched or SSH'd into your AdGuard box.
+Another fun idea, could be to display it on a little screen, either attached or SSH'd into your AdGuard box.
 
 <p align="center">
 <img src="https://i.ibb.co/VNL65hZ/20230529-165416.jpg" width="300" />
@@ -229,7 +229,7 @@ You'll need Rust installed. Run: `curl --proto '=https' --tlsv1.2 -sSf https://s
 
 Then clone the repo, and cd into it, with: `git clone git@github.com:Lissy93/AdGuardian-Term.git` && `cd AdGuardian-Term`
 
-You can view the full list of availible project commands in the [`Makefile`](https://github.com/Lissy93/AdGuardian-Term/blob/main/Makefile)
+You can view the full list of available project commands in the [`Makefile`](https://github.com/Lissy93/AdGuardian-Term/blob/main/Makefile)
 
 ### Run
 
@@ -496,7 +496,7 @@ A mirror of this repository is published at: [codeberg.org/alicia/adguardian](ht
 
 ## Alterntives
 
-This project was heavily inspired by [PADD](https://github.com/pi-hole/PADD) - terminal status for Pi-Hole users. If you're running [Pi-Hole](https://pi-hole.net/) instead of AdGuard, I highly reccomend you check that out, as it's awesome.
+This project was heavily inspired by [PADD](https://github.com/pi-hole/PADD) - terminal status for Pi-Hole users. If you're running [Pi-Hole](https://pi-hole.net/) instead of AdGuard, I highly recommend you check that out, as it's awesome.
 
 Other developers have built similar AdGuard Home monitoring programs for mobile, including:
 - iOS app: [AdGuard Home Remote](https://apps.apple.com/us/app/adguard-home-remote/id1543143740) by RocketScience IT
