@@ -385,7 +385,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/arcestia">
-            <img src="https://avatars.githubusercontent.com/u/7936962?u=41e34bb816ad09323e1650f3efc0bec4fb2bc5dd&v=4" width="80;" alt="arcestia"/>
+            <img src="https://avatars.githubusercontent.com/u/7936962?u=afc43f878a0858cae75418f18d9696d65ebd53f9&v=4" width="80;" alt="arcestia"/>
             <br />
             <sub><b>Laurensius Jeffrey</b></sub>
         </a>
