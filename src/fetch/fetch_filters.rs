@@ -3,7 +3,7 @@ use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct AdGuardFilteringStatus {
-    pub filters: Vec<Filter>,
+    pub filters: Option<Vec<Filter>>,
 }
 
 #[derive(Deserialize)]
