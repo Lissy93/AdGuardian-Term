@@ -18,7 +18,7 @@ use tui::{
 use crate::fetch::fetch_stats::StatsResponse;
 use crate::fetch::fetch_query_log::Query;
 use crate::fetch::fetch_status::StatusResponse;
-use crate::fetch::fetch_filters::AdGuardFilteringStatus;
+use crate::fetch::fetch_filters::{AdGuardFilteringStatus, Filter};
 
 use crate::widgets::gauge::make_gauge;
 use crate::widgets::table::make_query_table;
@@ -67,7 +67,11 @@ pub async fn draw_ui(
             let table = make_query_table(&data, size.width);
             let graph = make_history_chart(&stats);
             let paragraph = render_status_paragraph(&status, &stats);
-            let filters = make_filters_list(filters.filters.as_slice(), size.width);
+            let filter_items: &[Filter] = filters
+                .filters
+                .as_deref()
+                .unwrap_or(&[]);
+            let filters_list = make_filters_list(filter_items, size.width);
             let top_queried_domains = make_list("Top Queried Domains", &stats.top_queried_domains, Color::Green, size.width);
             let top_blocked_domains = make_list("Top Blocked Domains", &stats.top_blocked_domains, Color::Red, size.width);
             let top_clients = make_list("Top Clients", &stats.top_clients, Color::Cyan, size.width);
@@ -134,7 +138,7 @@ pub async fn draw_ui(
             f.render_widget(graph, top_chunks[1]);
             f.render_widget(table, chunks[1]);
             if size.height > 42 {
-                f.render_widget(filters, bottom_chunks[0]);
+                f.render_widget(filters_list, bottom_chunks[0]);
                 f.render_widget(top_queried_domains, bottom_chunks[1]);
                 f.render_widget(top_blocked_domains, bottom_chunks[2]);
                 f.render_widget(top_clients, bottom_chunks[3]);
