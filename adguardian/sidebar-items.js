@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["BRANCHES"],"fn":["main","run"],"mod":["fetch","ui","welcome","widgets"]};
+window.SIDEBAR_ITEMS = {"fn":["main","run"],"mod":["fetch","ui","welcome","widgets"]};
