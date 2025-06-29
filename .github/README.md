@@ -305,6 +305,13 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/kiuber">
+            <img src="https://avatars.githubusercontent.com/u/17628882?v=4" width="80;" alt="kiuber"/>
+            <br />
+            <sub><b>Kiuber</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/tromcho">
             <img src="https://avatars.githubusercontent.com/u/113139586?v=4" width="80;" alt="tromcho"/>
             <br />
@@ -442,7 +449,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/gl0bal01">
-            <img src="https://avatars.githubusercontent.com/u/173822055?v=4" width="80;" alt="gl0bal01"/>
+            <img src="https://avatars.githubusercontent.com/u/173822055?u=4d323807f120b34da9b156bfd168b46a22844764&v=4" width="80;" alt="gl0bal01"/>
             <br />
             <sub><b>Gl0bal01 💖 龴ↀ◡ↀ龴</b></sub>
         </a>
