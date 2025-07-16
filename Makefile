@@ -8,7 +8,7 @@ CARGO = $(CARGO_BIN) $(CARGO_OPTS)
 # Main make command - build, test and run the app
 all: clean build test doc run
 
-# Run the program, will first comile if needed
+# Run the program, will first compile if needed
 run: build
 	$(CARGO) run
 
@@ -36,7 +36,7 @@ check:
 fmt:
 	$(CARGO) fmt -- --check
 
-# Check for common mistakes, and improvments
+# Check for common mistakes, and improvements
 clippy:
 	$(CARGO) clippy -- -D warnings
 

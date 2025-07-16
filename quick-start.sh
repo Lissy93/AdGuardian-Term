@@ -3,7 +3,7 @@
 #################################################################
 # 🛡️ AdGuardian-Term - Simple start-up script                   #
 #################################################################
-# This scipt will download the latest binary for your system,   #
+# This script will download the latest binary for your system,  #
 # from GitHub, check it, make it executable, and then run it.   #
 #                                                               #
 # Docs and source: https://github.com/Lissy93/AdGuardian-Term   #
