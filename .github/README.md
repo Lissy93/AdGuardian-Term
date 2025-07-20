@@ -305,12 +305,20 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/kianmeng">
+            <img src="https://avatars.githubusercontent.com/u/134518?v=4" width="80;" alt="kianmeng"/>
+            <br />
+            <sub><b>Kian-Meng Ang</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/kiuber">
             <img src="https://avatars.githubusercontent.com/u/17628882?v=4" width="80;" alt="kiuber"/>
             <br />
             <sub><b>Kiuber</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/tromcho">
             <img src="https://avatars.githubusercontent.com/u/113139586?v=4" width="80;" alt="tromcho"/>
