@@ -413,20 +413,13 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/mryesiller">
-            <img src="https://avatars.githubusercontent.com/u/24632172?u=0d20f2d615158f87cd60a3398d3efb026c32f291&v=4" width="80;" alt="mryesiller"/>
+        <a href="https://github.com/Tuggster">
+            <img src="https://avatars.githubusercontent.com/u/29806952?v=4" width="80;" alt="Tuggster"/>
             <br />
-            <sub><b>Göksel Yeşiller</b></sub>
+            <sub><b>Paxton Phillips</b></sub>
         </a>
     </td></tr>
 <tr>
-    <td align="center">
-        <a href="https://github.com/meroxdotdev">
-            <img src="https://avatars.githubusercontent.com/u/35839230?u=2a3bb4891a20bc1b69ffbdbf0b6647aff0900705&v=4" width="80;" alt="meroxdotdev"/>
-            <br />
-            <sub><b>Melcher Robert</b></sub>
-        </a>
-    </td>
     <td align="center">
         <a href="https://github.com/getumbrel">
             <img src="https://avatars.githubusercontent.com/u/59408891?v=4" width="80;" alt="getumbrel"/>
@@ -461,18 +454,18 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Terminal Trove</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/hudsonrock-partnerships">
             <img src="https://avatars.githubusercontent.com/u/163282900?u=5f2667f7fe5d284ac7a2da6b0800ea8970b0fcbf&v=4" width="80;" alt="hudsonrock-partnerships"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/LambdaTest-Inc">
-            <img src="https://avatars.githubusercontent.com/u/171592363?v=4" width="80;" alt="LambdaTest-Inc"/>
+            <img src="https://avatars.githubusercontent.com/u/171592363?u=96606606a45fa170427206199014f2a5a2a4920b&v=4" width="80;" alt="LambdaTest-Inc"/>
             <br />
             <sub><b>LambdaTest</b></sub>
         </a>
