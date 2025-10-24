@@ -202,6 +202,9 @@ The terminal dashboard can also be viewed via a browser, thanks to [ttyd](https:
 The easiest way to run AdGuardian in web mode is using a pre-built Docker image:
 
 > **Note**: This is a third-party Docker image (`sdjnmxd/adguardian-web`) and is not officially maintained by the AdGuardian-Term project. Use at your own discretion.
+> 
+> **🐳 Docker Hub**: [sdjnmxd/adguardian-web](https://hub.docker.com/r/sdjnmxd/adguardian-web)  
+> **📚 Source Code**: [GitHub Repository](https://github.com/sdjnmxd/adguardian-web)
 
 ```bash
 docker run -d \
