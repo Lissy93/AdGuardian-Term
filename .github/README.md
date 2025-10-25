@@ -197,6 +197,29 @@ docker run \
 
 The terminal dashboard can also be viewed via a browser, thanks to [ttyd](https://github.com/tsl0922/ttyd).
 
+### Quick Start with Pre-built Docker Image
+
+The easiest way to run AdGuardian in web mode is using a pre-built Docker image:
+
+> **Note**: This is a third-party Docker image (`sdjnmxd/adguardian-web`) and is not officially maintained by the AdGuardian-Term project. Use at your own discretion.
+> 
+> **🐳 Docker Hub**: [sdjnmxd/adguardian-web](https://hub.docker.com/r/sdjnmxd/adguardian-web)  
+> **📚 Source Code**: [GitHub Repository](https://github.com/sdjnmxd/adguardian-web)
+
+```bash
+docker run -d \
+  -p 7681:7681 \
+  -e ADGUARD_IP=your.adguard.ip \
+  -e ADGUARD_PORT=80 \
+  -e ADGUARD_USERNAME=admin \
+  -e ADGUARD_PASSWORD=your_password \
+  sdjnmxd/adguardian-web
+```
+
+Then access it in your browser at `http://localhost:7681`
+
+### Manual Setup
+
 AdGuardian is fully compatible with ttyd, so once you've [installed](https://github.com/tsl0922/ttyd#installation) it, you can just precede your run command with ttyd.
 E.g. `ttyd docker run -it lissy93/adguardian` or `ttyd adguardian`
 
