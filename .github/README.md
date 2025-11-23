@@ -436,20 +436,27 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/ubaidwazir">
+            <img src="https://avatars.githubusercontent.com/u/81792092?v=4" width="80;" alt="ubaidwazir"/>
+            <br />
+            <sub><b>Muhammad Ubaid</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/OlliVHH">
             <img src="https://avatars.githubusercontent.com/u/84959562?v=4" width="80;" alt="OlliVHH"/>
             <br />
             <sub><b>HamburgerJung</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/frankdez93">
             <img src="https://avatars.githubusercontent.com/u/87549420?v=4" width="80;" alt="frankdez93"/>
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/BigoudOps">
             <img src="https://avatars.githubusercontent.com/u/101472804?u=5e4948110e48320024f212edf5ae2332b63fc391&v=4" width="80;" alt="BigoudOps"/>
@@ -484,15 +491,15 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>LambdaTest</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/gl0bal01">
             <img src="https://avatars.githubusercontent.com/u/173822055?u=4d323807f120b34da9b156bfd168b46a22844764&v=4" width="80;" alt="gl0bal01"/>
             <br />
             <sub><b>Gl0bal01 💖 龴ↀ◡ↀ龴</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/mazzeroo">
             <img src="https://avatars.githubusercontent.com/u/217485921?v=4" width="80;" alt="mazzeroo"/>
