@@ -75,7 +75,7 @@ docker run -it lissy93/adguardian
 ### Executable
 
 ```bash
-curl -o adguardian https://github.com/Lissy93/AdGuardian-Term/releases/latest/download/adguardian-linux && \
+curl -L -o adguardian https://github.com/Lissy93/AdGuardian-Term/releases/latest/download/adguardian-linux && \
 chmod +x adguardian && \
 ./adguardian
 ```
