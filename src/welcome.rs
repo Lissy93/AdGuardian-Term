@@ -72,7 +72,7 @@ fn check_version(version: Option<&str>) {
     
     match version {
         Some(version_str) => {
-            let adguard_version = Version::parse(&version_str[1..]).unwrap();
+            let adguard_version = Version::parse(version_str.strip_prefix('v').unwrap_or(version_str)).unwrap();
             
             if adguard_version < min_version {
                 print_error(
