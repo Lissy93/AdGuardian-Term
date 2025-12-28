@@ -335,13 +335,27 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/ciallo-agent">
+            <img src="https://avatars.githubusercontent.com/u/249317540?v=4" width="80;" alt="ciallo-agent"/>
+            <br />
+            <sub><b>Ciallo ⸜(｡˃ ᵕ ˂ )⸝♡</b></sub>
+        </a>
+    </td></tr>
+<tr>
+    <td align="center">
         <a href="https://github.com/kianmeng">
             <img src="https://avatars.githubusercontent.com/u/134518?v=4" width="80;" alt="kianmeng"/>
             <br />
             <sub><b>Kian-Meng Ang</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
+    <td align="center">
+        <a href="https://github.com/maxschipper">
+            <img src="https://avatars.githubusercontent.com/u/150921823?v=4" width="80;" alt="maxschipper"/>
+            <br />
+            <sub><b>Max Schipper</b></sub>
+        </a>
+    </td>
     <td align="center">
         <a href="https://github.com/kiuber">
             <img src="https://avatars.githubusercontent.com/u/17628882?v=4" width="80;" alt="kiuber"/>
@@ -476,6 +490,13 @@ Below is an outline + current status of each workflow.
             <img src="https://avatars.githubusercontent.com/u/173822055?u=4d323807f120b34da9b156bfd168b46a22844764&v=4" width="80;" alt="gl0bal01"/>
             <br />
             <sub><b>Gl0bal01 💖 龴ↀ◡ↀ龴</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/JDB321Sailor">
+            <img src="https://avatars.githubusercontent.com/u/212125521?v=4" width="80;" alt="JDB321Sailor"/>
+            <br />
+            <sub><b>Null</b></sub>
         </a>
     </td>
     <td align="center">
