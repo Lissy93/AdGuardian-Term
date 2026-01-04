@@ -436,17 +436,17 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/Zero-Tail">
+            <img src="https://avatars.githubusercontent.com/u/16860155?v=4" width="80;" alt="Zero-Tail"/>
+            <br />
+            <sub><b>ZeroTail</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/getumbrel">
             <img src="https://avatars.githubusercontent.com/u/59408891?v=4" width="80;" alt="getumbrel"/>
             <br />
             <sub><b>Umbrel</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/OlliVHH">
-            <img src="https://avatars.githubusercontent.com/u/84959562?v=4" width="80;" alt="OlliVHH"/>
-            <br />
-            <sub><b>HamburgerJung</b></sub>
         </a>
     </td>
     <td align="center">
@@ -500,10 +500,10 @@ Below is an outline + current status of each workflow.
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/Quad4-Software">
-            <img src="https://avatars.githubusercontent.com/u/219317474?v=4" width="80;" alt="Quad4-Software"/>
+        <a href="https://github.com/Envisage-Cloud-Solutions">
+            <img src="https://avatars.githubusercontent.com/u/219464178?v=4" width="80;" alt="Envisage-Cloud-Solutions"/>
             <br />
-            <sub><b>Quad4 Software</b></sub>
+            <sub><b>Envisage Cloud Solutions</b></sub>
         </a>
     </td></tr>
 </table>
