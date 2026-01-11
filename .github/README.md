@@ -437,9 +437,16 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/Zero-Tail">
-            <img src="https://avatars.githubusercontent.com/u/16860155?v=4" width="80;" alt="Zero-Tail"/>
+            <img src="https://avatars.githubusercontent.com/u/16860155?u=a31a29cc10aba4a336552ecd87914861a2e06e22&v=4" width="80;" alt="Zero-Tail"/>
             <br />
             <sub><b>ZeroTail</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/4aka">
+            <img src="https://avatars.githubusercontent.com/u/30434449?v=4" width="80;" alt="4aka"/>
+            <br />
+            <sub><b>Arch Incorp</b></sub>
         </a>
     </td>
     <td align="center">
@@ -455,15 +462,15 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Null</b></sub>
         </a>
-    </td>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/BigoudOps">
             <img src="https://avatars.githubusercontent.com/u/101472804?u=5e4948110e48320024f212edf5ae2332b63fc391&v=4" width="80;" alt="BigoudOps"/>
             <br />
             <sub><b>John BigoudOps</b></sub>
         </a>
-    </td></tr>
-<tr>
+    </td>
     <td align="center">
         <a href="https://github.com/terminaltrove">
             <img src="https://avatars.githubusercontent.com/u/121595180?v=4" width="80;" alt="terminaltrove"/>
@@ -492,6 +499,14 @@ Below is an outline + current status of each workflow.
             <sub><b>Gl0bal01 💖 龴ↀ◡ↀ龴</b></sub>
         </a>
     </td>
+    <td align="center">
+        <a href="https://github.com/0x41647269656E">
+            <img src="https://avatars.githubusercontent.com/u/191976713?v=4" width="80;" alt="0x41647269656E"/>
+            <br />
+            <sub><b>0x41647269656E</b></sub>
+        </a>
+    </td></tr>
+<tr>
     <td align="center">
         <a href="https://github.com/JDB321Sailor">
             <img src="https://avatars.githubusercontent.com/u/212125521?v=4" width="80;" alt="JDB321Sailor"/>
