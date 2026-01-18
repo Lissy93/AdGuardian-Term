@@ -444,7 +444,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/4aka">
-            <img src="https://avatars.githubusercontent.com/u/30434449?v=4" width="80;" alt="4aka"/>
+            <img src="https://avatars.githubusercontent.com/u/30434449?u=f2c0f3a157f1f59cffad960dc06107f47086fbb4&v=4" width="80;" alt="4aka"/>
             <br />
             <sub><b>Arch Incorp</b></sub>
         </a>
@@ -487,7 +487,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/LambdaTest-Inc">
-            <img src="https://avatars.githubusercontent.com/u/171592363?u=96606606a45fa170427206199014f2a5a2a4920b&v=4" width="80;" alt="LambdaTest-Inc"/>
+            <img src="https://avatars.githubusercontent.com/u/171592363?u=080d9ba6069d0ff2a0558825ff2f667c45807687&v=4" width="80;" alt="LambdaTest-Inc"/>
             <br />
             <sub><b>LambdaTest</b></sub>
         </a>
@@ -501,7 +501,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/0x41647269656E">
-            <img src="https://avatars.githubusercontent.com/u/191976713?v=4" width="80;" alt="0x41647269656E"/>
+            <img src="https://avatars.githubusercontent.com/u/191976713?u=e2c3d380c9e9140fa022a27c598915538b0083e5&v=4" width="80;" alt="0x41647269656E"/>
             <br />
             <sub><b>0x41647269656E</b></sub>
         </a>
