@@ -520,6 +520,13 @@ Below is an outline + current status of each workflow.
             <br />
             <sub><b>Christian Løvgren Jensen</b></sub>
         </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/UhOhSpaghettiCode">
+            <img src="https://avatars.githubusercontent.com/u/247676402?v=4" width="80;" alt="UhOhSpaghettiCode"/>
+            <br />
+            <sub><b>No Thanks</b></sub>
+        </a>
     </td></tr>
 </table>
 <!-- readme: sponsors -end -->
