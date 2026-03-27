@@ -8,7 +8,7 @@
 
 ## About
 
-AdGuardian Terminal Eddition - Keep an eye on your traffic, with this (unofficial) buddy for your AdGuard Home instance
+AdGuardian Terminal Edition - Keep an eye on your traffic, with this (unofficial) buddy for your AdGuard Home instance
 
 <p align="center">
 <img width="600" src="https://i.ibb.co/Nrtd01d/adguardian-demo.gif?" >
