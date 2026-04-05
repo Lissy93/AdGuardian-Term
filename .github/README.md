@@ -444,7 +444,7 @@ Below is an outline + current status of each workflow.
     </td>
     <td align="center">
         <a href="https://github.com/Daechler">
-            <img src="https://avatars.githubusercontent.com/u/50748803?v=4" width="80;" alt="Daechler"/>
+            <img src="https://avatars.githubusercontent.com/u/50748803?u=de67f2510378245669e134c508b676ea82e7688f&v=4" width="80;" alt="Daechler"/>
             <br />
             <sub><b>Daechler</b></sub>
         </a>
@@ -519,13 +519,6 @@ Below is an outline + current status of each workflow.
             <img src="https://avatars.githubusercontent.com/u/219464178?v=4" width="80;" alt="Envisage-Cloud-Solutions"/>
             <br />
             <sub><b>Envisage Cloud Solutions</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/UhOhSpaghettiCode">
-            <img src="https://avatars.githubusercontent.com/u/247676402?u=0bda2a0f4c134befbd89e26b6e8a749a5166d6bc&v=4" width="80;" alt="UhOhSpaghettiCode"/>
-            <br />
-            <sub><b>No Thanks</b></sub>
         </a>
     </td></tr>
 </table>
